@@ -1,690 +1,696 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="${extra.food} + ' — DineHaven'" >Product Detail</title>
-  <link rel="stylesheet" th:href="@{/inex.css}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-
-<style>
-  /* ═══════════════════════════════════════
-     RESET & BASE
-     ═══════════════════════════════════════ */
-  *, *::before, *::after {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: #ff6b35 transparent;
-  }
-
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(160deg, #fff8f0 0%, #ffffff 50%, #fff5eb 100%);
-    color: #333;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  a { text-decoration: none; color: inherit; }
-  a:hover { border-bottom: none; }
-
-  /* ═══════════════════════════════════════
-     LOADING OVERLAY
-     ═══════════════════════════════════════ */
-  #loadingOverlay {
-    position: fixed; inset: 0;
-    background: #fff;
-    display: flex; justify-content: center; align-items: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease;
-  }
-  #loadingOverlay.hidden {
-    opacity: 0; pointer-events: none;
-  }
-
-  /* ═══════════════════════════════════════
-     PRODUCT LAYOUT — desktop: side-by-side
-     ═══════════════════════════════════════ */
-  .product-hero {
-    max-width: 1200px;
-    margin: 30px auto 0;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: start;
-    animation: fadeUp 0.65s ease both;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── Image Column ── */
-  .product-image-col {
-    position: sticky;
-    top: 90px;
-  }
-
-  .product-image-wrapper {
-    position: relative;
-    border-radius: 26px;
-    overflow: hidden;
-    background: linear-gradient(145deg, #ffecd2, #fcb69f);
-    aspect-ratio: 1 / 1;
-    box-shadow: 0 20px 60px rgba(255,107,53,0.14), 0 8px 24px rgba(0,0,0,0.07);
-    transition: transform 0.45s ease, box-shadow 0.45s ease;
-  }
-
-  .product-image-wrapper:hover {
-    transform: scale(1.02);
-    box-shadow: 0 28px 70px rgba(255,107,53,0.2), 0 14px 36px rgba(0,0,0,0.1);
-  }
-
-  .product-image-wrapper img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.55s ease;
-  }
-  .product-image-wrapper:hover img { transform: scale(1.06); }
-
-  .image-badge {
-    position: absolute; top: 16px; left: 16px;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(8px);
-    padding: 6px 14px; border-radius: 50px;
-    font-size: 0.78rem; font-weight: 600; color: #2e7d32;
-    display: flex; align-items: center; gap: 5px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    animation: badgePop 0.5s 0.3s ease both;
-  }
-  .image-badge i { font-size: 1rem; color: #4caf50; }
-
-  @keyframes badgePop {
-    from { opacity: 0; transform: scale(0.8) translateY(6px); }
-    to   { opacity: 1; transform: scale(1)   translateY(0); }
-  }
-
-  /* ── Info Column ── */
-  .product-info-col { padding-top: 6px; }
-
-  /* Breadcrumb */
-  .breadcrumb-nav {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 0.82rem; color: #999; margin-bottom: 14px; flex-wrap: wrap;
-  }
-  .breadcrumb-nav a { color: #ff6b35; font-weight: 500; transition: color 0.2s; }
-  .breadcrumb-nav a:hover { color: #e55a2b; }
-
-  /* Title */
-  .product-title {
-    font-size: 2.5rem; font-weight: 800;
-    color: #1a1a1a; line-height: 1.15; margin-bottom: 10px;
-    letter-spacing: -0.5px;
-  }
-
-  /* Rating */
-  .product-rating {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;
-  }
-  .product-rating .stars { color: #ffb400; font-size: 1.1rem; letter-spacing: 2px; }
-  .product-rating .rating-text { font-size: 0.83rem; color: #888; font-weight: 500; }
-
-  /* Price Row */
-  .product-price-row {
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 22px; flex-wrap: wrap;
-  }
-
-  .product-price {
-    font-size: 2.3rem; font-weight: 800;
-    background: linear-gradient(135deg, #ff6b35, #ff4500);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .free-delivery-tag {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 5px 14px;
-    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-    color: #2e7d32; font-size: 0.78rem; font-weight: 600; border-radius: 50px;
-  }
-  .free-delivery-tag i { font-size: 1rem; }
-
-  /* Divider */
-  .section-divider {
-    border: none; height: 1px;
-    background: linear-gradient(to right, transparent, #e0e0e0, transparent);
-    margin: 24px 0;
-  }
-
-  /* ── Description Card ── */
-  .desc-card {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,107,53,0.07);
-    border-radius: 20px;
-    padding: 24px 28px; margin-bottom: 24px;
-    box-shadow: 0 4px 22px rgba(0,0,0,0.04);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .desc-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 32px rgba(0,0,0,0.07);
-  }
-
-  .desc-card-title {
-    font-size: 1.05rem; font-weight: 700; color: #333;
-    margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
-  }
-  .desc-card-title i { color: #ff6b35; font-size: 1.25rem; }
-
-  .desc-card p {
-    font-size: 0.92rem; color: #666; line-height: 1.75; margin: 0; padding: 0;
-  }
-
-  /* ── Features Grid ── */
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px; margin-bottom: 28px;
-  }
-
-  .feature-chip {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px 14px;
-    background: #fff;
-    border: 1px solid #f0f0f0;
-    border-radius: 14px;
-    font-size: 0.8rem; font-weight: 500; color: #555;
-    transition: all 0.3s ease;
-  }
-  .feature-chip:hover {
-    background: #fff8f0; border-color: #ff6b35;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(255,107,53,0.1);
-  }
-  .feature-chip i { font-size: 1.15rem; color: #ff6b35; flex-shrink: 0; }
-
-  /* ── Action Buttons ── */
-  .action-row {
-    display: flex; gap: 14px; margin-top: 10px;
-  }
-
-  .btn-add-cart {
-    flex: 1;
-    display: inline-flex; align-items: center; justify-content: center;
-    gap: 10px; padding: 16px 32px;
-    background: linear-gradient(135deg, #ff6b35, #ff4500);
-    color: #fff; font-size: 1rem; font-weight: 700;
-    border: none; border-radius: 16px; cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 26px rgba(255,69,0,0.24);
-    letter-spacing: 0.3px;
-  }
-  .btn-add-cart:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 38px rgba(255,69,0,0.34);
-    background: linear-gradient(135deg, #ff7849, #ff5a1a);
-  }
-  .btn-add-cart:active { transform: translateY(-1px); }
-  .btn-add-cart i { font-size: 1.25rem; }
-
-  .btn-share {
-    display: inline-flex; align-items: center; justify-content: center;
-    gap: 8px; padding: 16px 24px;
-    background: #fff; color: #333;
-    font-size: 0.95rem; font-weight: 600;
-    border: 2px solid #eee; border-radius: 16px;
-    cursor: pointer; transition: all 0.3s ease;
-  }
-  .btn-share:hover {
-    border-color: #ff6b35; color: #ff6b35; background: #fff8f0;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 22px rgba(0,0,0,0.06);
-  }
-  .btn-share i { font-size: 1.15rem; }
-
-  /* ── Share Modal ── */
-  .modal-content {
-    border-radius: 22px; border: none;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.16); padding: 10px;
-  }
-  .modal-header {
-    border-bottom: 1px solid #f0f0f0; padding: 20px 24px;
-  }
-  .modal-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.15rem !important; font-weight: 700; color: #333;
-  }
-
-  .share-options {
-    display: flex; justify-content: center; gap: 28px; padding: 30px 20px;
-  }
-
-  .share-icon-link {
-    display: flex; flex-direction: column; align-items: center;
-    gap: 8px; transition: transform 0.3s ease; text-decoration: none;
-  }
-  .share-icon-link:hover { transform: translateY(-5px); border-bottom: none; }
-
-  .share-icon-link img {
-    width: 50px; height: 50px; border-radius: 14px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    transition: box-shadow 0.3s ease;
-  }
-  .share-icon-link:hover img { box-shadow: 0 8px 28px rgba(0,0,0,0.18); }
-
-  .share-icon-link span { font-size: 0.75rem; font-weight: 600; color: #666; }
-
-  /* ── Reviews Section ── */
-  .reviews-section {
-    max-width: 1200px;
-    margin: 50px auto 70px;
-    padding: 0 24px;
-    animation: fadeUp 0.8s ease both;
-  }
-
-  .reviews-card {
-    background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0,0,0,0.04);
-    border-radius: 22px;
-    padding: 32px 36px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-  }
-
-  .reviews-card h3 {
-    font-size: 1.35rem; font-weight: 700; color: #1a1a1a;
-    margin-bottom: 8px; display: flex; align-items: center; gap: 10px; padding: 0;
-  }
-  .reviews-card h3 i { color: #ff6b35; font-size: 1.4rem; }
-
-  .reviews-card > p {
-    color: #888; font-size: 0.88rem; margin-bottom: 20px; padding: 0;
-  }
-
-  /* ═══════════════════════════════════════
-     DARK MODE
-     ═══════════════════════════════════════ */
-  body.dark {
-    background: linear-gradient(160deg, #0a0a0a 0%, #111 50%, #0d0d0d 100%);
-    color: #e1e1e1;
-  }
-  body.dark .product-title { color: #fff; }
-  body.dark .product-price {
-    background: linear-gradient(135deg, #ff8c5a, #ff6b35);
-    -webkit-background-clip: text; background-clip: text;
-  }
-  body.dark .desc-card {
-    background: rgba(30,30,30,0.85); border-color: rgba(255,255,255,0.06);
-  }
-  body.dark .desc-card-title { color: #fff; }
-  body.dark .desc-card p { color: #aaa; }
-  body.dark .feature-chip {
-    background: #1a1a1a; border-color: #2a2a2a; color: #ccc;
-  }
-  body.dark .feature-chip:hover {
-    background: #222; border-color: #ff6b35;
-  }
-  body.dark .btn-share {
-    background: #1a1a1a; border-color: #333; color: #eee;
-  }
-  body.dark .btn-share:hover {
-    border-color: #ff6b35; color: #ff6b35; background: #1a1a1a;
-  }
-  body.dark .reviews-card {
-    background: rgba(30,30,30,0.85); border-color: rgba(255,255,255,0.05);
-  }
-  body.dark .reviews-card h3 { color: #fff; }
-  body.dark .reviews-card > p { color: #888; }
-  body.dark .breadcrumb-nav { color: #666; }
-  body.dark .product-rating .rating-text { color: #777; }
-  body.dark .section-divider {
-    background: linear-gradient(to right, transparent, #333, transparent);
-  }
-  body.dark .product-image-wrapper {
-    background: linear-gradient(145deg, #2a1a0e, #1a0e05);
-  }
-  body.dark .modal-content { background: #1a1a1a; }
-  body.dark .modal-header { border-color: #333; }
-  body.dark .modal-title { color: #fff; }
-  body.dark .share-icon-link span { color: #aaa; }
-  body.dark .nav { background-color: #000; }
-  body.dark .offcanvas-body { background-color: black; }
-  body.dark .offcanvas-header { background-color: black; }
-  body.dark .dropdown-menu { background-color: #000; }
-  body.dark a { color: #fff; }
-  body.dark p { color: #ccc; }
-  body.dark h6 { color: #fff; }
-  body.dark #loadingOverlay { background: #111; }
-
-  /* ═══════════════════════════════════════
-     RESPONSIVE — TABLET (≤ 992px)
-     ═══════════════════════════════════════ */
-  @media (max-width: 992px) {
-    .product-hero {
-      grid-template-columns: 1fr;
-      gap: 28px;
-      margin-top: 16px;
-      padding: 0 20px;
-    }
-
-    .product-image-col {
-      position: relative;
-      top: auto;
-    }
-
-    .product-image-wrapper {
-      max-width: 520px;
-      margin: 0 auto;
-      border-radius: 22px;
-    }
-
-    .product-title { font-size: 2rem; }
-    .product-price { font-size: 2rem; }
-
-    .features-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .reviews-section { margin-top: 36px; margin-bottom: 50px; }
-  }
-
-  /* ═══════════════════════════════════════
-     RESPONSIVE — MOBILE  (≤ 680px)
-     ═══════════════════════════════════════ */
-  @media (max-width: 680px) {
-    .product-hero {
-      padding: 0 16px;
-      gap: 22px;
-      margin-top: 12px;
-    }
-
-    .product-image-wrapper {
-      max-width: 100%;
-      border-radius: 20px;
-      aspect-ratio: 4 / 3;             /* shorter on phone */
-    }
-
-    .image-badge {
-      top: 12px; left: 12px;
-      padding: 5px 12px; font-size: 0.72rem;
-    }
-
-    .breadcrumb-nav { font-size: 0.76rem; gap: 6px; margin-bottom: 10px; }
-
-    .product-title {
-      font-size: 1.65rem;
-      letter-spacing: -0.3px;
-    }
-
-    .product-rating { margin-bottom: 12px; }
-    .product-rating .stars { font-size: 1rem; }
-    .product-rating .rating-text { font-size: 0.78rem; }
-
-    .product-price { font-size: 1.85rem; }
-
-    .free-delivery-tag { font-size: 0.72rem; padding: 4px 12px; }
-
-    .section-divider { margin: 18px 0; }
-
-    .desc-card {
-      padding: 18px 20px;
-      border-radius: 16px;
-    }
-    .desc-card-title { font-size: 0.96rem; }
-    .desc-card p { font-size: 0.86rem; line-height: 1.7; }
-
-    .features-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .feature-chip {
-      padding: 10px 12px;
-      font-size: 0.76rem;
-      border-radius: 12px;
-    }
-    .feature-chip i { font-size: 1.05rem; }
-
-    .action-row {
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .btn-add-cart {
-      width: 100%; justify-content: center;
-      padding: 15px 20px; font-size: 0.95rem;
-      border-radius: 14px;
-    }
-
-    .btn-share {
-      width: 100%; justify-content: center;
-      padding: 14px 20px; font-size: 0.9rem;
-      border-radius: 14px;
-    }
-
-    .reviews-section {
-      margin-top: 28px; margin-bottom: 40px;
-      padding: 0 16px;
-    }
-
-    .reviews-card {
-      padding: 22px 20px;
-      border-radius: 18px;
-    }
-    .reviews-card h3 { font-size: 1.15rem; }
-    .reviews-card > p { font-size: 0.82rem; }
-
-    .share-options { gap: 20px; padding: 24px 16px; }
-    .share-icon-link img { width: 44px; height: 44px; }
-
-    .modal-content { margin: 10px; }
-  }
-
-  /* ═══════════════════════════════════════
-     RESPONSIVE — SMALL PHONE (≤ 400px)
-     ═══════════════════════════════════════ */
-  @media (max-width: 400px) {
-    .product-hero { padding: 0 12px; gap: 18px; }
-    .product-title { font-size: 1.45rem; }
-    .product-price { font-size: 1.65rem; }
-    .features-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .feature-chip { padding: 9px 10px; font-size: 0.72rem; }
-    .desc-card { padding: 16px; }
-    .reviews-card { padding: 18px 16px; }
-    .reviews-section { padding: 0 12px; }
-  }
-</style>
-
-<body>
-
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay">
-    <div class="spinner-border text-warning" role="status" style="width: 3.5rem; height: 3.5rem;">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </div>
-
-  <div th:replace="navbar :: navbar"></div>
-
-  <!-- ── Product Hero ── -->
-  <div class="product-hero">
-
-    <!-- Image Column -->
-    <div class="product-image-col">
-      <div class="product-image-wrapper">
-        <img th:src="@{/img/{id}(id=${extra.id})}" alt="Product Image">
-        <div class="image-badge">
-          <i class="ri-truck-line"></i> Free Delivery
-        </div>
-      </div>
-    </div>
-
-    <!-- Info Column -->
-    <div class="product-info-col">
-
-      <div class="breadcrumb-nav">
-        <a th:href="@{/index}">Home</a>
-        <span>›</span>
-        <a th:href="@{/cate}">Menu</a>
-        <span>›</span>
-        <span th:text="${extra.food}">Product</span>
-      </div>
-
-      <h1 class="product-title" th:text="${extra.food}">Product Name</h1>
-
-      <div class="product-rating">
-        <span class="stars">★★★★★</span>
-        <span class="rating-text">4.8 · 120+ orders</span>
-      </div>
-
-      <div class="product-price-row">
-        <span class="product-price" th:text="'₹' + ${extra.price}">₹299</span>
-        <span class="free-delivery-tag">
-          <i class="ri-bike-line"></i> Free Delivery
-        </span>
-      </div>
-
-      <hr class="section-divider">
-
-      <!-- Description -->
-      <div class="desc-card">
-        <div class="desc-card-title">
-          <i class="ri-file-text-line"></i> Product Description
-        </div>
-        <p th:text="${extra.description != null ? extra.description : 'Freshly prepared with premium ingredients. Delivered hot and fresh to your doorstep. Order now and enjoy a delightful meal!'}">
-          Description text goes here.
-        </p>
-      </div>
-
-      <!-- Features -->
-      <div class="features-grid">
-        <div class="feature-chip">
-          <i class="ri-timer-flash-line"></i> 30 min delivery
-        </div>
-        <div class="feature-chip">
-          <i class="ri-shield-check-line"></i> Quality assured
-        </div>
-        <div class="feature-chip">
-          <i class="ri-leaf-line"></i> Fresh ingredients
-        </div>
-        <div class="feature-chip">
-          <i class="ri-fire-line"></i> Bestseller
-        </div>
-        <div class="feature-chip">
-          <i class="ri-star-smile-line"></i> Top rated
-        </div>
-        <div class="feature-chip">
-          <i class="ri-hand-heart-line"></i> Hygiene certified
-        </div>
-      </div>
-
-      <hr class="section-divider">
-
-      <!-- Action Buttons -->
-      <div class="action-row">
-        <form th:action="@{'/add/' + ${extra.id}}" method="post" style="flex:1;display:flex;">
-          <button type="submit" class="btn-add-cart">
-            <i class="ri-shopping-cart-2-line"></i> Add to Cart
-          </button>
-        </form>
-        <button type="button" class="btn-share" data-bs-toggle="modal" data-bs-target="#shareModal">
-          <i class="ri-share-forward-line"></i> Share
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ── Share Modal ── -->
-  <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="shareModalLabel">
-            <i class="ri-share-line" style="color:#ff6b35;margin-right:6px;"></i> Share this item
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="share-options">
-          <a class="share-icon-link" href="https://www.facebook.com/sharer/sharer.php?u=https://meow-fixed.onrender.com" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
-            <span>Facebook</span>
-          </a>
-          <a class="share-icon-link" href="https://web.whatsapp.com/send?text=Check out this dish! https://meow-fixed.onrender.com" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
-            <span>WhatsApp</span>
-          </a>
-          <a class="share-icon-link" href="https://twitter.com/intent/tweet?url=https://meow-fixed.onrender.com&text=Check out this dish!" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
-            <span>Twitter</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── Reviews Section ── -->
-  <div class="reviews-section">
-    <div class="reviews-card">
-      <h3>
-        <i class="ri-chat-smile-2-line"></i> Comments & Reviews
-      </h3>
-      <p>Share your experience about this product — your feedback helps others!</p>
-      <div class="fb-comments"
-           th:attr="data-href=${'https://meow-fixed.onrender.com/extra/' + extra.id}"
-           data-width="100%"
-           data-numposts="5">
-      </div>
-    </div>
-  </div>
-
-  <!-- ── Scripts ── -->
-  <script>
-    // Loading overlay
-    window.addEventListener("load", function () {
-      var overlay = document.getElementById("loadingOverlay");
-      if (overlay) {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/inex.css}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+ <script>
+      // Wait until page fully loads
+      window.addEventListener("load", function () {
+        const overlay = document.getElementById("loadingOverlay");
+
+        // fade out the overlay
         overlay.classList.add("hidden");
-        setTimeout(function(){ overlay.style.display = "none"; }, 600);
+
+        // remove it from DOM after fade completes
+        setTimeout(() => overlay.style.display = "none", 10000);
+      });
+    </script>
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v24.0&appId=APP_ID"></script>
+      </head><link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+<style>
+    body{
+      background-color:#fff;
+    }
+a{
+    text-decoration: none;
+    color: orange;
+    font-weight: 900;
+    font-size: 20px;
+    text-align: center;
+
+  
+}
+h3{
+  color: #000000;
+}
+
+*{
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+        scrollbar-width: none;
+    }
+   
+
+   
+
+
+
+
+
+h1{
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding-top: 10px;
+    font-size: 6rem;
+      
+}
+h3{
+    color: rgb(0, 0, 0);
+    padding-left: 20px;
+    font-size: 2.2rem;
+    padding-top: 50px;
+}
+.bottom1{
+    height: 500px;
+    width: 30%;
+    background-color: rgb(255, 255, 255);
+    float: left;
+}
+.bottom2{
+     height: 500px;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+    float: right;
+}
+p{
+    color: rgb(0, 0, 0);
+    font-size: 2rem;
+    padding: 20px;
+}
+h4{
+    color: rgb(0, 0, 0);
+    font-size: 1.8rem;
+    padding: 40px
+}
+h6{color: rgb(0, 0, 0);
+    font-size: 1.5rem;
+    padding-left: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+pre{
+    color: rgb(0, 0, 0);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+a{
+    text-decoration: none;
+    color:orange;
+    font-size: 10px;
+}
+html{
+  scroll-behavior: smooth;
+}
+td{
+  position: relative;
+  overflow: hidden;
+  
+}
+
+
+  .btw {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 15px 25px;
+      background-color:rgb(255, 123, 8);
+      color: rgb(255, 255, 255);
+       font-size: 17px;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.8s;
+    }
+      .btn1 {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 15px 25px;
+      border: 2px solid #f8ff33; 
+      color: rgb(255, 251, 40);
+      background-color:white;
+       font-size: 16px;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+.btn1:hover{
+background-color:skyblue;
+color:white;
+transform:scale(1.05);
+}
+.btw:hover{
+background-color:white;
+color:rgb(255, 72, 0);
+transform:scale(1.05);
+ border: 2px outset rgb(255, 110, 37); 
+}
+.bt{
+background-color:rgb(254, 136, 25);
+color:rgb(0, 0, 0);
+
+ border: 2px solid rgb(249, 255, 75); 
+  border-radius: 8px;
+   margin-top: 0px;
+      padding: 2px 4px;
+}
+.bt:hover{
+background-color:white;
+color:rgb(0, 0, 0);
+transform:scale(1.05);
+ border: 2px solid rgb(255, 255, 255); 
+  border-radius: 8px;
+   margin-top: 0px;
+      padding: 2px 4px;
+}
+
+ #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* can use #f8f9fa or dark overlay */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* above everything */
+        transition: opacity 0.8s ease;
+      }
+      #loadingOverlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+ 
+
+.fb-comments {
+  border-top: 1px solid #ffffff;
+  padding-top: 15px;
+}
+.ai{
+color: orange;
+margin-top: 2px;
+font-size: 1.4rem;
+}
+    .nav{
+      background-image: linear-gradient(120deg,rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0));
+    }
+   
+    h4{
+       color: rgb(0, 0, 0);
+     
+    }
+  .main{
+  background-image: linear-gradient(110deg,rgb(247, 233, 150),rgb(206, 245, 255),rgb(234, 251, 140));
+}
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    
+    padding: 10px 0;
+  }
+
+  .marquee-images {
+    display: inline-flex;
+    gap: 20px;
+    animation: scroll 15s linear infinite;
+  }
+
+  .marquee-images img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+p{
+  color: #000000;
+}
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .btn3{
+    border-color: white;
+    background-color: white;
+  }
+  a{
+    text-decoration: none;
+    margin-top: 10px;
+    transition: border-bottom 3s ease-in;
+    color: black;
+  }
+  a:hover{
+      border-bottom: 2px solid #000000; 
+  }
+   #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* can use #f8f9fa or dark overlay */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* above everything */
+        transition: opacity 1.5s ease-in-out;
+      }
+      #loadingOverlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+  @media (max-width: 992px) {
+  .box1 h4 {
+    font-size: 2.5rem;
+    padding-top: 50px;
+  }
+  .box1 pre {
+    font-size: 1.1rem;
+  }
+}
+
+/* 📱 Mobile devices */
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .box1, .box2 {
+    flex: 1 1 100%;
+    padding: 10px;
+  }
+
+  .box1 h4 {
+    font-size: 2rem;
+    padding-top: 20px;
+  }
+
+  .box1 pre {
+    font-size: 1rem;
+  }
+
+  .box2 img {
+    width: 90%;
+    margin-top: 20px;
+  }
+}
+.ab{
+background-color: rgb(251, 155, 59);
+color: #ffffff;
+}
+.section {
+      border-bottom: 1px solid #eee;
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      color: #212121;
+    }
+
+    .section p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* Switch (Dark Mode) */
+    .switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+h6{
+  color:black;
+}
+    input:checked + .slider {
+      background-color: #2874f0;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    /* Icons */
+    .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e9f0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2874f0;
+      font-size: 18px;
+      margin-right: 15px;
+    }
+
+   
+
+    /* Button style for links */
+    .arrow {
+      font-weight: bold;
+      color: #2874f0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .arrow:hover {
+      transform: translateX(4px);
+    }
+
+    /* Dark Mode Styles */
+    body.dark {
+      background: #000000;
+      color: #e1e1e1;
+    }
+
+    body.dark .container {
+      background: #ffffff;
+      box-shadow: none;
+    }
+     body.dark .card {
+     background-image: linear-gradient(120deg,orange,white,orange);
+    }
+    
+body.dark .nav{
+  background-color: #000000;
+}
+    body.dark .section {
+      border-color: #333;
+    }
+
+     body.dark p {
+      color: #ffffff;
+    }
+    body.dark a {
+      color: #ffffff;
+    }
+    body.dark .arrow {
+      color: #90caf9;
+    }
+
+    body.dark .slider {
+      background-color: #555;
+    }
+     body.dark .bottom1 {
+      background-color: #000000;
+    }
+     body.dark .bottom2 {
+      background-color: #000000;
+    }
+  body.dark .main{
+  background-image: linear-gradient(120deg,black,rgb(0, 0, 0));
+  
+   }
+   body.dark h4{
+    color:orange;
+    text-shadow:0 0 0.5rem rgb(0, 0, 0),
+      0 0 0.7rem rgb(0, 0, 0),
+    0 0 1.5rem rgb(0, 0, 0);
+   }
+    body.dark h2{
+    color:orange;
+    text-shadow:0 0 0.5rem rgb(255, 199, 57),
+      0 0 0.7rem rgb(162, 150, 150),
+   
+   }
+   body.dark pre{
+    color:rgb(255, 255, 255);
+    text-shadow:0 0 0.5rem rgb(0, 0, 0),
+      0 0 0.7rem rgb(0, 0, 0),
+    0 0 1.5rem rgb(0, 0, 0);
+   }
+   body.dark .offcanvas-body{
+background-color: black;
+   }
+   
+    body.dark .container{
+background-color: black;
+   }
+   
+    body.dark h3{
+color: rgb(255, 255, 255);
+   }
+   
+    body.dark p{
+color: rgb(255, 255, 255);
+   }
+   body.dark .offcanvas-header{
+    background-color: black;
+   }
+    body.dark p{
+   color: rgb(255, 255, 255);
+   }
+    body.dark h6{
+   color: rgb(255, 255, 255);
+   }
+ body.dark .ab{
+background-color: orange;
+color: white;
+   }
+   body.dark .dropdown-menu{
+    background-color: #000000;
+   }
+    body.dark .btn3 {
+     background-color: black;
+     color: white;
+    }
+
+    /* 📱 Responsive Mobile Overrides */
+    @media (max-width: 768px) {
+      .bottom1, .bottom2 {
+        width: 100% !important;
+        float: none !important;
+        height: auto !important;
+        padding: 20px !important;
+      }
+      
+      .bottom2 {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        height: 350px !important;
+      }
+
+      .bottom2 .img-responsive {
+        width: 90% !important;
+        height: 90% !important;
+        margin: 0 !important;
+      }
+
+      .bottom1 h3, .bottom1 p, .bottom1 h4, .bottom1 h6, .bottom1 pre, .bottom1 form, .bottom1 button {
+        padding-left: 15px !important;
+        margin-left: 0 !important;
+      }
+
+      .bottom1 pre {
+        white-space: pre-wrap !important;
+      }
+
+      .bottom1 p[style*="position:absolute"] {
+        position: static !important;
+        margin: 15px 0 !important;
+        padding-left: 15px !important;
+      }
+
+      .container.mb-5 {
+        margin-top: 20px !important;
+      }
+    }
+</style>
+<body>
+  <div id="loadingOverlay">
+      <div class="spinner-border text-dark" role="status" style="width: 4rem; height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+<div th:replace="navbar :: navbar"></div>
+
+
+
+    
+
+    <div class="bottom1" style="margin-top: 0px;height: 700px;">
+            <h3 style="padding-left: 47px;" th:text="${extra.food}"></h3> 
+            <p style="padding-left: 40px; margin-top:-15px;" th:text="${'₹' + extra.price}"></p>
+                      <p style="position:absolute;top:180px;left:25px;" ><a style="background-color:#d0f0c0;color:green;border-radius:50px;padding-top:6px;padding-bottom:6px;padding-left:13px;padding-right:13px;">free delivery</a></p>
+            <h4 style="margin-top: -20px;">Product description</h4>
+            <h6 style="margin-top:-20px;">Dynamic island</h6>
+            <br>
+            <pre  style="padding-left: 10px;margin-top:-20px;">
+      Dynamic Island bubbles up alerts and Live Activities 
+      so you don’t miss them while you’re doing something 
+      else. You can track your next ride, see who’s calling, 
+      check your flight status, and so much more.
+            </pre>
+            
+          <form th:action="@{'/add/' + ${extra.id}}" method="post">
+<button type="submit"   class="btw  fw-bolder"   style="margin-left: 40px;margin-top: -9px;padding: 10px;padding-left: 20px;padding-right: 20px;">
+ ≫ Add to cart
+</button>
+          </form>  
+
+<!-- Button trigger modal -->
+<button type="button" class="btn3 " data-bs-toggle="modal" data-bs-target="#exampleModa" style="border-width: 0px;margin-top: 30px;margin-left: 50px;">
+ ➦ Share
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+     
+      <div class="modal-body">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">➦ Share link</h1>
+        <div style="margin-top:25px;">
+  <a style="padding-left: 150px;padding-right: 20px;margin-right: 20px;" href="https://www.facebook.com/sharer/sharer.php?u=https://yourwebsite.com/page" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="30">
+  </a>
+
+<a  href="https://web.whatsapp.com/send?text=Check this out! https://yourwebsite.com/page"
+   target="_blank"
+   style="text-decoration:none;">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+       width="36"
+       alt="Share on WhatsApp"
+       style="border-radius:50%; box-shadow:0 2px 4px rgba(0,0,0,0.2); transition:transform 0.2s;">
+</a>
+
+  <a style="padding-left: 10px;margin-left: 20px;" href="https://twitter.com/intent/tweet?url=https://yourwebsite.com/page&text=Check this out!" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" width="30">
+  </a>
+</div>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+  
+
+
+
+        </div>
+        <div class="bottom2" style="margin-top: 0px;height: 700px;background-size:cover;display:flex;">
+         <div class="img-responsive" th:style="'background-image: url(' + @{/img/{id}(id=${extra.id})} + '); 
+                background-size: cover; 
+                background-position: center; 
+                height: 76%; 
+                width: 80%; 
+                margin: 40px 0 0 100px;
+                margin-left:150px;
+                '">
+</div>
+
+        </div>
+
+        
+
+<div class="container  mb-5" style="margin-top: -80px;">
+  <div style="
+    
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 25px 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;">
+    
+    <h3 style="
+      
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;">
+      <i class="ri-chat-3-line" style="color: rgb(232, 255, 55); font-size: 1.8rem; margin-right: 8px;"></i>
+      Comments & Reviews
+    </h3>
+
+    <p style="
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      padding-left: 2px;">
+      Share your experience about this product — your feedback helps others!
+    </p>
+
+    <div class="fb-comments"
+         th:attr="data-href=${'https://bright-otter-1234.ngrok-free.app/extra/' + extra.id + '?ngrok-skip-browser-warning=true'}"
+         data-width="100%"
+         data-numposts="5">
+    </div>
+  </div>
+</div>
+ <script>
+  const toggle = document.getElementById("darkToggle");
+
+  // 1. When the page loads, check if the user had dark mode on
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    if (toggle) toggle.checked = true;
+  }
+
+  // 2. Listen for toggle change
+  if (toggle) {
+    toggle.addEventListener("change", () => {
+      if (toggle.checked) {
+        document.body.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.body.classList.remove("dark");
+        localStorage.setItem("theme", "light");
       }
     });
+  }
+</script>
 
-    // Dark mode
-    var toggle = document.getElementById("darkToggle");
-    var savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark");
-      if (toggle) toggle.checked = true;
-    }
-    if (toggle) {
-      toggle.addEventListener("change", function() {
-        if (toggle.checked) {
-          document.body.classList.add("dark");
-          localStorage.setItem("theme", "dark");
-        } else {
-          document.body.classList.remove("dark");
-          localStorage.setItem("theme", "light");
-        }
-      });
-    }
-  </script>
-
-  <div id="fb-root"></div>
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v24.0&appId=APP_ID"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 
 </body>
 </html>
