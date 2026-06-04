@@ -282,7 +282,7 @@ public class Mycontroller {
         model.addAttribute("categories", categories);
 
         // Return the form page (must match your .html file name)
-        return "Food"; // this should be foodform.html in templates/
+        return "food"; // this should be food.html in templates/
     }
 
     @PostMapping("/category")
@@ -290,7 +290,7 @@ public class Mycontroller {
         Cat d = new Cat();
         d.setCategory(category);
         c.save(d);
-        return "Index";
+        return "index";
     }
 
     @PostMapping("/food")
