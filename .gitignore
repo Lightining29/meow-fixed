@@ -1,0 +1,27 @@
+# Ignore Maven build output
+**/target/
+**/*.jar
+**/*.war
+
+# Ignore IDE settings and configurations
+**/.idea/
+**/*.iml
+**/.classpath
+**/.project
+**/.settings/
+**/.vscode/
+
+# Ignore local Maven wrapper files/logs
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+**/.DS_Store
+**/*.log
+**/temp/
+**/tmp/
+
+# Ignore local environment secrets
+.env
+.env.local
+.env.*
+**/.env

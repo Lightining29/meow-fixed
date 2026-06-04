@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search • Instagram</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dbdbdb;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            text-decoration: none;
+            color: black;
+        }
+
+        .user-card:hover {
+            background: #f5f5f5;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 1px solid #ccc;
+        }
+
+        .username {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .bio {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 30px 0;
+            color: #888;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SEARCH BAR -->
+    <form action="/search" method="get">
+        <input
+                type="text"
+                name="q"
+                th:value="${query}"
+                placeholder="Search users"
+                class="search-bar"
+        />
+    </form>
+
+    <!-- RESULTS -->
+  <div th:if="${#lists.isEmpty(results)}" class="no-results">
+        No users found.
+    </div>
+
+    <div th:each="u : ${results}">
+        <a  class="user-card" th:href="@{'/extra/' + ${u.id}}">
+
+            <img
+                    class="avatar"
+th:src="@{'/img/' + ${u.id}}"
+                    alt="profile"
+            />
+
+            <div>
+                <div class="username" th:text="${u.food}"></div>
+                <div class="bio" th:text="${u.description}"></div>
+            </div>
+
+        </a>
+         <form action="" method="post" style="margin-left:10px;">
+      
+        <button type="submit"
+                style="
+                    padding:6px 12px;
+                    background:#ff5900;
+                    border:none;
+                    border-radius:6px;
+                    color:white;
+                    font-size:14px;
+                    cursor:pointer;
+                ">
+            Buy now
+        </button>
+    </form>
+    </div>
+
+</div>
+
+</body>
+</html>

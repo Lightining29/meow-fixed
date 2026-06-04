@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/inex.css}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+ <script>
+      // Wait until page fully loads
+      window.addEventListener("load", function () {
+        const overlay = document.getElementById("loadingOverlay");
+
+        // fade out the overlay
+        overlay.classList.add("hidden");
+
+        // remove it from DOM after fade completes
+        setTimeout(() => overlay.style.display = "none", 10000);
+      });
+    </script>
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v24.0&appId=APP_ID"></script>
+      </head><link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+<style>
+    body{
+      background-color:#fff;
+    }
+a{
+    text-decoration: none;
+    color: orange;
+    font-weight: 900;
+    font-size: 20px;
+    text-align: center;
+
+  
+}
+h3{
+  color: #000000;
+}
+
+*{
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+        scrollbar-width: none;
+    }
+   
+
+   
+
+
+
+
+
+h1{
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding-top: 10px;
+    font-size: 6rem;
+      
+}
+h3{
+    color: rgb(0, 0, 0);
+    padding-left: 20px;
+    font-size: 2.2rem;
+    padding-top: 50px;
+}
+.bottom1{
+    height: 500px;
+    width: 30%;
+    background-color: rgb(255, 255, 255);
+    float: left;
+}
+.bottom2{
+     height: 500px;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+    float: right;
+}
+p{
+    color: rgb(0, 0, 0);
+    font-size: 2rem;
+    padding: 20px;
+}
+h4{
+    color: rgb(0, 0, 0);
+    font-size: 1.8rem;
+    padding: 40px
+}
+h6{color: rgb(0, 0, 0);
+    font-size: 1.5rem;
+    padding-left: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+pre{
+    color: rgb(0, 0, 0);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+a{
+    text-decoration: none;
+    color:orange;
+    font-size: 10px;
+}
+html{
+  scroll-behavior: smooth;
+}
+td{
+  position: relative;
+  overflow: hidden;
+  
+}
+
+
+  .btw {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 15px 25px;
+      background-color:rgb(255, 123, 8);
+      color: rgb(255, 255, 255);
+       font-size: 17px;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.8s;
+    }
+      .btn1 {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 15px 25px;
+      border: 2px solid #f8ff33; 
+      color: rgb(255, 251, 40);
+      background-color:white;
+       font-size: 16px;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+.btn1:hover{
+background-color:skyblue;
+color:white;
+transform:scale(1.05);
+}
+.btw:hover{
+background-color:white;
+color:rgb(255, 72, 0);
+transform:scale(1.05);
+ border: 2px outset rgb(255, 110, 37); 
+}
+.bt{
+background-color:rgb(254, 136, 25);
+color:rgb(0, 0, 0);
+
+ border: 2px solid rgb(249, 255, 75); 
+  border-radius: 8px;
+   margin-top: 0px;
+      padding: 2px 4px;
+}
+.bt:hover{
+background-color:white;
+color:rgb(0, 0, 0);
+transform:scale(1.05);
+ border: 2px solid rgb(255, 255, 255); 
+  border-radius: 8px;
+   margin-top: 0px;
+      padding: 2px 4px;
+}
+
+ #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* can use #f8f9fa or dark overlay */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* above everything */
+        transition: opacity 0.8s ease;
+      }
+      #loadingOverlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+ 
+
+.fb-comments {
+  border-top: 1px solid #ffffff;
+  padding-top: 15px;
+}
+.ai{
+color: orange;
+margin-top: 2px;
+font-size: 1.4rem;
+}
+    .nav{
+      background-image: linear-gradient(120deg,rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0));
+    }
+   
+    h4{
+       color: rgb(0, 0, 0);
+     
+    }
+  .main{
+  background-image: linear-gradient(110deg,rgb(247, 233, 150),rgb(206, 245, 255),rgb(234, 251, 140));
+}
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    
+    padding: 10px 0;
+  }
+
+  .marquee-images {
+    display: inline-flex;
+    gap: 20px;
+    animation: scroll 15s linear infinite;
+  }
+
+  .marquee-images img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+p{
+  color: #000000;
+}
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .btn3{
+    border-color: white;
+    background-color: white;
+  }
+  a{
+    text-decoration: none;
+    margin-top: 10px;
+    transition: border-bottom 3s ease-in;
+    color: black;
+  }
+  a:hover{
+      border-bottom: 2px solid #000000; 
+  }
+   #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* can use #f8f9fa or dark overlay */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* above everything */
+        transition: opacity 1.5s ease-in-out;
+      }
+      #loadingOverlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+  @media (max-width: 992px) {
+  .box1 h4 {
+    font-size: 2.5rem;
+    padding-top: 50px;
+  }
+  .box1 pre {
+    font-size: 1.1rem;
+  }
+}
+
+/* 📱 Mobile devices */
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .box1, .box2 {
+    flex: 1 1 100%;
+    padding: 10px;
+  }
+
+  .box1 h4 {
+    font-size: 2rem;
+    padding-top: 20px;
+  }
+
+  .box1 pre {
+    font-size: 1rem;
+  }
+
+  .box2 img {
+    width: 90%;
+    margin-top: 20px;
+  }
+}
+.ab{
+background-color: rgb(251, 155, 59);
+color: #ffffff;
+}
+.section {
+      border-bottom: 1px solid #eee;
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      color: #212121;
+    }
+
+    .section p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* Switch (Dark Mode) */
+    .switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+h6{
+  color:black;
+}
+    input:checked + .slider {
+      background-color: #2874f0;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    /* Icons */
+    .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e9f0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2874f0;
+      font-size: 18px;
+      margin-right: 15px;
+    }
+
+   
+
+    /* Button style for links */
+    .arrow {
+      font-weight: bold;
+      color: #2874f0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .arrow:hover {
+      transform: translateX(4px);
+    }
+
+    /* Dark Mode Styles */
+    body.dark {
+      background: #000000;
+      color: #e1e1e1;
+    }
+
+    body.dark .container {
+      background: #ffffff;
+      box-shadow: none;
+    }
+     body.dark .card {
+     background-image: linear-gradient(120deg,orange,white,orange);
+    }
+    
+body.dark .nav{
+  background-color: #000000;
+}
+    body.dark .section {
+      border-color: #333;
+    }
+
+     body.dark p {
+      color: #ffffff;
+    }
+    body.dark a {
+      color: #ffffff;
+    }
+    body.dark .arrow {
+      color: #90caf9;
+    }
+
+    body.dark .slider {
+      background-color: #555;
+    }
+     body.dark .bottom1 {
+      background-color: #000000;
+    }
+     body.dark .bottom2 {
+      background-color: #000000;
+    }
+  body.dark .main{
+  background-image: linear-gradient(120deg,black,rgb(0, 0, 0));
+  
+   }
+   body.dark h4{
+    color:orange;
+    text-shadow:0 0 0.5rem rgb(0, 0, 0),
+      0 0 0.7rem rgb(0, 0, 0),
+    0 0 1.5rem rgb(0, 0, 0);
+   }
+    body.dark h2{
+    color:orange;
+    text-shadow:0 0 0.5rem rgb(255, 199, 57),
+      0 0 0.7rem rgb(162, 150, 150),
+   
+   }
+   body.dark pre{
+    color:rgb(255, 255, 255);
+    text-shadow:0 0 0.5rem rgb(0, 0, 0),
+      0 0 0.7rem rgb(0, 0, 0),
+    0 0 1.5rem rgb(0, 0, 0);
+   }
+   body.dark .offcanvas-body{
+background-color: black;
+   }
+   
+    body.dark .container{
+background-color: black;
+   }
+   
+    body.dark h3{
+color: rgb(255, 255, 255);
+   }
+   
+    body.dark p{
+color: rgb(255, 255, 255);
+   }
+   body.dark .offcanvas-header{
+    background-color: black;
+   }
+    body.dark p{
+   color: rgb(255, 255, 255);
+   }
+    body.dark h6{
+   color: rgb(255, 255, 255);
+   }
+ body.dark .ab{
+background-color: orange;
+color: white;
+   }
+   body.dark .dropdown-menu{
+    background-color: #000000;
+   }
+    body.dark .btn3 {
+     background-color: black;
+     color: white;
+    }
+
+    /* 📱 Responsive Mobile Overrides */
+    @media (max-width: 768px) {
+      .bottom1, .bottom2 {
+        width: 100% !important;
+        float: none !important;
+        height: auto !important;
+        padding: 20px !important;
+      }
+      
+      .bottom2 {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        height: 350px !important;
+      }
+
+      .bottom2 .img-responsive {
+        width: 90% !important;
+        height: 90% !important;
+        margin: 0 !important;
+      }
+
+      .bottom1 h3, .bottom1 p, .bottom1 h4, .bottom1 h6, .bottom1 pre, .bottom1 form, .bottom1 button {
+        padding-left: 15px !important;
+        margin-left: 0 !important;
+      }
+
+      .bottom1 pre {
+        white-space: pre-wrap !important;
+      }
+
+      .bottom1 p[style*="position:absolute"] {
+        position: static !important;
+        margin: 15px 0 !important;
+        padding-left: 15px !important;
+      }
+
+      .container.mb-5 {
+        margin-top: 20px !important;
+      }
+    }
+</style>
+<body>
+  <div id="loadingOverlay">
+      <div class="spinner-border text-dark" role="status" style="width: 4rem; height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+<div th:replace="navbar :: navbar"></div>
+
+
+
+    
+
+    <div class="bottom1" style="margin-top: 0px;height: 700px;">
+            <h3 style="padding-left: 47px;" th:text="${extra.food}"></h3> 
+            <p style="padding-left: 40px; margin-top:-15px;" th:text="${'₹' + extra.price}"></p>
+                      <p style="position:absolute;top:180px;left:25px;" ><a style="background-color:#d0f0c0;color:green;border-radius:50px;padding-top:6px;padding-bottom:6px;padding-left:13px;padding-right:13px;">free delivery</a></p>
+            <h4 style="margin-top: -20px;">Product description</h4>
+            <h6 style="margin-top:-20px;">Dynamic island</h6>
+            <br>
+            <pre  style="padding-left: 10px;margin-top:-20px;">
+      Dynamic Island bubbles up alerts and Live Activities 
+      so you don’t miss them while you’re doing something 
+      else. You can track your next ride, see who’s calling, 
+      check your flight status, and so much more.
+            </pre>
+            
+          <form th:action="@{'/add/' + ${extra.id}}" method="post">
+<button type="submit"   class="btw  fw-bolder"   style="margin-left: 40px;margin-top: -9px;padding: 10px;padding-left: 20px;padding-right: 20px;">
+ ≫ Add to cart
+</button>
+          </form>  
+
+<!-- Button trigger modal -->
+<button type="button" class="btn3 " data-bs-toggle="modal" data-bs-target="#exampleModa" style="border-width: 0px;margin-top: 30px;margin-left: 50px;">
+ ➦ Share
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+     
+      <div class="modal-body">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">➦ Share link</h1>
+        <div style="margin-top:25px;">
+  <a style="padding-left: 150px;padding-right: 20px;margin-right: 20px;" href="https://www.facebook.com/sharer/sharer.php?u=https://yourwebsite.com/page" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="30">
+  </a>
+
+<a  href="https://web.whatsapp.com/send?text=Check this out! https://yourwebsite.com/page"
+   target="_blank"
+   style="text-decoration:none;">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+       width="36"
+       alt="Share on WhatsApp"
+       style="border-radius:50%; box-shadow:0 2px 4px rgba(0,0,0,0.2); transition:transform 0.2s;">
+</a>
+
+  <a style="padding-left: 10px;margin-left: 20px;" href="https://twitter.com/intent/tweet?url=https://yourwebsite.com/page&text=Check this out!" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" width="30">
+  </a>
+</div>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+  
+
+
+
+        </div>
+        <div class="bottom2" style="margin-top: 0px;height: 700px;background-size:cover;display:flex;">
+         <div class="img-responsive" th:style="'background-image: url(' + @{/img/{id}(id=${extra.id})} + '); 
+                background-size: cover; 
+                background-position: center; 
+                height: 76%; 
+                width: 80%; 
+                margin: 40px 0 0 100px;
+                margin-left:150px;
+                '">
+</div>
+
+        </div>
+
+        
+
+<div class="container  mb-5" style="margin-top: -80px;">
+  <div style="
+    
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 25px 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;">
+    
+    <h3 style="
+      
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;">
+      <i class="ri-chat-3-line" style="color: rgb(232, 255, 55); font-size: 1.8rem; margin-right: 8px;"></i>
+      Comments & Reviews
+    </h3>
+
+    <p style="
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      padding-left: 2px;">
+      Share your experience about this product — your feedback helps others!
+    </p>
+
+    <div class="fb-comments"
+         th:attr="data-href=${'https://bright-otter-1234.ngrok-free.app/extra/' + extra.id + '?ngrok-skip-browser-warning=true'}"
+         data-width="100%"
+         data-numposts="5">
+    </div>
+  </div>
+</div>
+ <script>
+  const toggle = document.getElementById("darkToggle");
+
+  // 1. When the page loads, check if the user had dark mode on
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    if (toggle) toggle.checked = true;
+  }
+
+  // 2. Listen for toggle change
+  if (toggle) {
+    toggle.addEventListener("change", () => {
+      if (toggle.checked) {
+        document.body.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.body.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
+    });
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+</body>
+</html>

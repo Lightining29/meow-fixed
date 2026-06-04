@@ -1,0 +1,24 @@
+# Ignore Maven build output and project files across the directory tree
+**/target/
+**/*.jar
+**/*.war
+
+# Ignore IDE files
+**/.idea/
+**/*.iml
+**/.classpath
+**/.project
+**/.settings/
+**/.vscode/
+
+# Ignore local maven wrapper and logs
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+**/.DS_Store
+**/*.log
+
+# Ignore local Docker configurations
+Dockerfile
+docker-compose.yml
+.dockerignore

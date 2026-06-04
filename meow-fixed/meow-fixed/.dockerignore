@@ -1,0 +1,24 @@
+# Maven build output
+target/
+*.jar
+*.war
+
+# IDE configuration files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+
+# Local maven wrapper files/logs
+.mvn/
+mvnw
+mvnw.cmd
+.DS_Store
+*.log
+
+# Docker configurations
+Dockerfile
+docker-compose.yml
+.dockerignore

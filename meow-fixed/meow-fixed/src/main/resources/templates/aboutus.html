@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  </head>
+  <body>
+ 
+
+<nav class="navbar navbar-expand-lg bg-info-subtle">
+  <div class="container-fluid" style="height: 37px;">
+    <a class="navbar-brand fst-italic fw-bolder text-decoration-underline" href="#">ᯓ  ✈︎ Travelous</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse ms-auto " id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active fw-bolder" aria-current="page" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bolder" href="aboutus.html">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bolder" href="secondpage.html">Pricing</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-bolder" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Tour places
+          </a>
+          <ul class="dropdown-menu">
+               <li><a class="dropdown-item" href="mountfuji.html">Mount fuji</a></li>
+            <li><a class="dropdown-item" href="paris.html">Paris</a></li>
+            <li><a class="dropdown-item" href="sweden.html">Sweden</a></li>
+            <li><a class="dropdown-item" href="manali.html">Manali</a></li>
+            <li><a class="dropdown-item" href="cyprus.html">Ladhak</a></li>
+            <li><a class="dropdown-item" href="shimla.html">Shimla</a></li>
+          </ul>
+          
+          
+           <li class="nav-item " style="padding-right: 10px; margin-top: 2px;" >
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Sign-up
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" style="padding-left: 200px;" id="exampleModalLabel">Sign-up</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+  <div class="col">
+    <input type="text" class="form-control border-black" placeholder="First name" aria-label="First name">
+  </div>
+  <div class="col">
+    <input type="text" class="form-control border-black" placeholder="Last name" aria-label="Last name">
+  </div>
+</div>
+        <div class="mb-3" style="margin-top: 10px;" >
+  <label for="exampleFormControlInput1" class="form-label ">Email address</label>
+  <input type="email" class="form-control border-black" id="exampleFormControlInput1" placeholder="name@example.com">
+</div>
+ <div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Phone number</label>
+  <input type="email" class="form-control border-black" id="exampleFormControlInput1" placeholder="name@example.com">
+</div>
+ <div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">enter password</label>
+  <input type="email" class="form-control border-black" id="exampleFormControlInput1" placeholder="name@example.com">
+</div>
+ <div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">confirm password</label>
+  <input type="email" class="form-control border-black" id="exampleFormControlInput1" placeholder="name@example.com">
+</div>
+<button type="button" style="width: 470px; margin-top: 20px;background-color: rgb(0, 110, 255); color: aliceblue;" class="btn btn-outline-primary">Register</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+</div>
+        </li>
+        </li>
+     <!-- Button trigger modal -->
+<button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+ <img src="avatar.png" alt="" style="height: 30px;width: 30px;">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 " style="padding-left: 200px;" id="staticBackdropLabel">Login</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label ">Email address</label>
+  <input type="email" class="form-control border-black" id="exampleFormControlInput1" placeholder="name@example.com">
+</div>
+<label for="inputPassword5" class="form-label">Password</label>
+<input type="password" id="inputPassword5" class="form-control border-black" aria-describedby="passwordHelpBlock" placeholder="manish@123">
+<button type="button" style="width: 470px; margin-top: 50px;background-color: rgb(21, 78, 212);color: aliceblue;" class="btn btn-outline-primary">Login</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+  
+</nav>
+
+
+
+
+
+
+<div class="row">
+    <h1 style="padding-left: 450px;padding-top: 50px;font-size: 3.5rem;">Board of Director</h1>
+    <h1 style="padding-left: 540px; font-size: 1.5rem;">welcome to travelous</h1>
+</div>
+
+
+
+
+
+
+<div class="row" style="margin-top: 50px;">
+    <hr>
+</div>
+
+
+
+
+
+
+
+<div class="row text-decoration-underline fst-italic">
+    <h1 style="padding-left: 520px;padding-top: 50px;font-size: 2rem">Managing Director</h1>
+</div>
+
+
+
+
+<div class="row">
+    <div class="card shadow-lg" style="width: 18rem;margin-left: 510px; margin-top: 40px;">
+  <img src="modi2.jpg" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Narendra modi</h5>
+    <p class="card-text">Managing director of travelous agency </p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">ph no: +91 8851961088</li>
+    <li class="list-group-item">Large Share holder</li>
+    <li class="list-group-item">Qualifictaion : Btech</li>
+  </ul>
+  
+</div>
+</div>
+
+
+
+
+
+
+<div class="row text-decoration-underline fst-italic">
+    <h1 style="padding-left: 530px;font-size: 2rem;padding-top: 50px;">Head of divison</h1>
+</div>
+
+
+
+<div class="row" style="margin-left: 50px;margin-top: 50px;">
+    <div class="col-sm-4">
+        <div class="card shadow-lg" style="width: 18rem;">
+  <img src="trump.jpg" class="card-img-top" alt="..." style="height: 180px;">
+  <div class="card-body">
+    <h5 class="card-title">donald trump</h5>
+    <p class="card-text">Head of directors</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Ph no:+1 901 234 (1254)</li>
+    <li class="list-group-item">Qualification: MBA</li>
+    
+  </ul>
+  
+</div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card shadow-lg" style="width: 18rem;">
+  <img src="putin.jpg" class="card-img-top" alt="..." style="height: 180px;">
+  <div class="card-body">
+    <h5 class="card-title">Vladimir putin</h5>
+    <p class="card-text">Head of directors</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Ph no:+1 901 234 (1254)</li>
+    <li class="list-group-item">Qualification: MBA</li>
+    
+  </ul>
+  
+</div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card shadow-lg" style="width: 18rem;">
+  <img src="xijinping.jpg" class="card-img-top" alt="..." style="height: 180px;">
+  <div class="card-body">
+    <h5 class="card-title">Xi jinping</h5>
+    <p class="card-text">Head of direactor</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Ph no:+1 901 234 (1254)</li>
+    <li class="list-group-item">Qualification: MBA</li>
+   
+  </ul>
+  
+</div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row" style="margin-top: 100px;">
+    <hr>
+</div>
+
+
+
+<div class="row" > <div class="col-6 col-md-2 mb-3 " style="padding-left: 50px; padding-top: 100px;"> <h5>Section</h5> <ul class="nav flex-column"> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary" style="padding-left: 50px; padding-top: 100px;" >Home</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary" style="padding-left: 50px; padding-top: 100px;" >Features</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li> </ul> </div> <div class="col-6 col-md-2 mb-3"  style="padding-left: 50px; padding-top: 100px;" > <h5>Section</h5> <ul class="nav flex-column"> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li> </ul> </div> <div class="col-6 col-md-2 mb-3" style="padding-left: 50px; padding-top: 100px;" > <h5>Section</h5> <ul class="nav flex-column"> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li> <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li> </ul> </div> <div class="col-md-5 offset-md-1 mb-3" style="padding-left: 50px; padding-top: 100px;" > <form> <h5>Subscribe to our newsletter</h5> <p>Monthly digest of what's new and exciting from us.</p> <div class="d-flex flex-column flex-sm-row w-100 gap-2"> <label for="newsletter1" class="visually-hidden">Email address</label> <input id="newsletter1" type="email" class="form-control" placeholder="Email address"> <button class="btn btn-primary " style="margin-top: 50px;margin-right: 100px;"  type="button">Subscribe</button> </div> </form> </div> </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  </body>
+</html>

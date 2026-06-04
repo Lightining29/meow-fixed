@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Category</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+<style>
+  body{
+    background-image: linear-gradient(180deg,rgb(247, 255, 171),white);
+
+  }
+  *{
+  scrollbar-width: thin;
+  }
+  .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top:25px;
+    }
+    .product {
+     background-color: rgba(255,255,255,0.2);
+      padding: 5px;
+      
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px55px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .product:hover{
+   transform: translateY(10px);
+   transform: scale(1.05);
+   box-shadow:0 0 5px grey;
+    }
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .product h3 {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+    .product li {
+      color: #666;
+      font-size: 14px;
+    }
+    .price {
+      font-weight: bold;
+      margin-top: 5px;
+      color: #e67e22;
+    }
+    a{
+      text-decoration: none;
+      color: black;
+     
+    }
+    a:hover{
+    color:black;
+     
+    }
+     li{
+color:black;
+      background-color: rgba(255,255,255,0.5);
+      border-radius: 20px;
+       border: 1px solid black; 
+    }
+    
+    li:hover{
+     background-image: linear-gradient(120deg,rgb(247, 255, 88),rgb(255, 151, 151));
+      color: white;
+      border-radius: 20px;
+      transform:translatey(-5px);
+    }
+    .btn:hover{
+    transform:scale(1.03);
+    }
+    ul {
+  list-style-type: none; /* removes the bullets */
+  padding-left: 0;       /* removes the left indent */
+  margin-left: 0;
+}
+
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column !important;
+      height: auto !important;
+    }
+    .col-sm-2, .col-sm-10 {
+      width: 100% !important;
+      float: none !important;
+      height: auto !important;
+      padding: 15px !important;
+    }
+    .filters {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 10px !important;
+    }
+    .search input {
+      width: 100% !important;
+    }
+    .filters button {
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-top: 10px !important;
+    }
+  }
+
+    
+</style>
+<body>
+
+   
+
+
+
+
+
+
+    <div class="row  " style="height:100%;"  >
+        <div class="col-sm-2 text-center" style="backdrop-filter: blur(10px);padding-left: 35px;padding-top: 17px;float:left;height:100%">
+        <b style="font-size:2rem;color:lightgrey"><a href="main.jsp" style="font-size:2rem;color:black;">𐙚Bιȥȥαɾҽ </a></b>
+        <div class="topbar">
+        <div class="filters" style="display :flex;margin-bottom:20px;margin-top:25px;" >
+          <div class="search"><input type="search" style="width: 160px;border-radius: 20px;height: 35px;padding-left: 12px;background-color: rgba(255,255,255,0.2);font-size:0.84rem;border-width:1px;" placeholder="🔍︎  Search categories..." /></div>
+        </div>
+        
+      </div>
+       
+       <ul>
+  <li th:each="cat : ${categories}" style="margin-bottom:20px;">
+    <a th:href="@{'/foodlist/' + ${cat.id}}" style="font-size:1.3rem;">
+      <span th:text="${cat.category}"></span>
+    </a>
+  </li>
+</ul>
+
+        </div>
+        <div class="col-sm-10 " style="padding-top: 25px;float:right;height:100%;">
+        <div class="topbar">
+        <div class="filters" style="display :flex;margin-bottom:20px; flex-wrap: wrap; gap: 10px;" >
+          <div class="search flex-grow-1"><input type="search" style="width: 100%; max-width: 750px;border-radius: 20px;height: 40px;padding-left: 20px;background-color: rgba(255,255,255,0.2);border-width:1px;" placeholder="Search products by name..." /></div>
+          
+          <button class="btn" href="Item.jsp" style="height: 43px;width:150px;background-image: linear-gradient(120deg,rgb(247, 255, 88),rgb(255, 151, 151));border-radius: 20px;margin-top: -2px;margin-left: 10px;color: white;"><a href="Item.jsp" style="font-size: 1rem;color: white;">+ Add products</a></button>
+        </div>
+      </div>
+<div class="products" style="margin-bottom: 10px;">
+  <a th:each="p : ${products}" th:href="@{'/extra/' + ${p.id}}">
+    <div class="product">
+      <img th:src="@{'/img/' + ${p.id}}" alt="Product" style="object-fit:cover;">
+      <h3 th:text="${p.food}"></h3>
+      <span th:text="${p.description}"></span>
+      <div class="price" th:text="'₹' + ${p.price}"></div>
+    </div>
+  </a>
+</div>
+    </div>
+    </div>
+
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+<script src="Script.js"></script>
+</body>
+</html>

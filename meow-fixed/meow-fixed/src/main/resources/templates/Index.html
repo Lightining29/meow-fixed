@@ -1,0 +1,1698 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link rel="stylesheet" th:href="@{/inex.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script>
+    // Wait until page fully loads
+    window.addEventListener("load", function () {
+      const overlay = document.getElementById("loadingOverlay");
+
+      // fade out the overlay
+      overlay.classList.add("hidden");
+
+      // remove it from DOM after fade completes
+      setTimeout(() => overlay.style.display = "none", 100);
+    });
+  </script>
+</head>
+
+<style>
+  .about-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 10%;
+    gap: 50px;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 18px;
+  }
+
+  body.dark .about-section {
+    background: linear-gradient(135deg, black, black);
+  }
+
+  .about-text {
+    flex: 1 1 400px;
+    max-width: 600px;
+  }
+
+  body.dark .about-text {
+    color: white;
+  }
+
+  .about-text h2 {
+    font-size: 2.5rem;
+    color: #ff9800;
+    margin-bottom: 20px;
+  }
+
+  .about-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    font-weight: 540;
+    margin-bottom: 20px;
+    color: #555;
+  }
+
+  body.dark .about-section .about-text p {
+    font-weight: 400;
+    color: white;
+  }
+
+  .about-text button {
+    background-color: #ff9800;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .about-text button:hover {
+    background-color: #e68900;
+  }
+
+  .about-image {
+    flex: 1 1 400px;
+    max-width: 500px;
+  }
+
+  .about-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  @media(max-width: 900px) {
+    .about-section {
+      flex-direction: column-reverse;
+      text-align: center;
+    }
+
+    .about-text button {
+      margin-bottom: 20px;
+    }
+  }
+
+  .form-control {
+    border: 1px solid #bbb !important;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.25s;
+  }
+
+  .form-control:focus {
+    border-color: #4a68ff !important;
+    box-shadow: 0 0 0 0.15rem rgba(80, 110, 255, 0.3);
+  }
+
+  .modal-content {
+    padding: 10px 20px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  body {
+    background-color: #ffffff;
+    scroll-behavior: smooth;
+  }
+
+  .ai {
+    color: orange;
+    margin-top: 2px;
+    font-size: 1.4rem;
+  }
+
+  .nav {
+    background-image: linear-gradient(120deg, rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0));
+  }
+
+  pre {
+    color: rgb(205, 243, 247);
+    padding-left: 50px;
+    font-size: 1.3rem;
+    padding-top: 30px;
+    text-shadow: 0 0 0.5rem rgb(99, 94, 94),
+      0 0 1rem rgb(255, 255, 255),
+      0 0 1.5rem rgb(255, 255, 255);
+    animation: glow 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    0% {
+      transform: translateY(10px);
+    }
+
+    100% {
+      transform: translateY(-10px);
+
+    }
+  }
+
+  .main {
+    background-image: linear-gradient(110deg, rgb(247, 233, 150), rgb(206, 245, 255), rgb(234, 251, 140));
+  }
+
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+
+    padding: 10px 0;
+  }
+
+  .marquee-images {
+    display: inline-flex;
+    gap: 20px;
+    animation: scroll 15s linear infinite;
+  }
+
+  .marquee-images img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  p {
+    color: #000000;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  a {
+    text-decoration: none;
+    margin-top: 10px;
+    transition: border-bottom 3s ease-in;
+    color: black;
+  }
+
+  a:hover {
+
+    border-bottom: 2px solid #000000;
+  }
+
+  #loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    /* can use #f8f9fa or dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* above everything */
+    transition: opacity 1.5s ease;
+  }
+
+  #loadingOverlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: 992px) {
+    .box1 h4 {
+      font-size: 2.5rem;
+      padding-top: 50px;
+    }
+
+    .box1 pre {
+      font-size: 1.1rem;
+    }
+  }
+
+  /* 📱 Mobile devices */
+  @media (max-width: 768px) {
+    .main {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .box1,
+    .box2 {
+      flex: 1 1 100%;
+      padding: 10px;
+    }
+
+    .box1 h4 {
+      font-size: 2rem;
+      padding-top: 20px;
+    }
+
+    .box1 pre {
+      font-size: 1rem;
+    }
+
+    .box2 img {
+      width: 90%;
+      margin-top: 20px;
+    }
+  }
+
+  .ab {
+    background-color: rgb(255, 98, 0);
+    color: #ffffff;
+  }
+
+  .section {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section:last-child {
+    border-bottom: none;
+  }
+
+  .section h2 {
+    font-size: 16px;
+    color: #212121;
+  }
+
+  .section p {
+    font-size: 13px;
+    color: #666;
+  }
+
+  /* Switch (Dark Mode) */
+  .switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+
+  input:checked+.slider {
+    background-color: #2874f0;
+  }
+
+  input:checked+.slider:before {
+    transform: translateX(26px);
+  }
+
+  /* Icons */
+  .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9f0ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2874f0;
+    font-size: 18px;
+    margin-right: 15px;
+  }
+
+
+
+  /* Button style for links */
+  .arrow {
+    font-weight: bold;
+    color: #2874f0;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .arrow:hover {
+    transform: translateX(4px);
+  }
+
+  /* Dark Mode Styles */
+  body.dark {
+    background: #000000;
+    color: #e1e1e1;
+  }
+
+  body.dark .container {
+    background: #ffffff;
+    box-shadow: none;
+  }
+
+  body.dark .card {
+    background-image: linear-gradient(120deg, rgb(255, 255, 255), white, rgb(255, 147, 6));
+  }
+
+  body.dark .btn1 {
+    background-color: rgb(255, 98, 0);
+    color: white;
+  }
+
+  body.dark .nav {
+    background-color: #000000;
+  }
+
+  body.dark .section {
+    border-color: #333;
+  }
+
+  body.dark p {
+    color: #ffffff;
+  }
+
+  body.dark a {
+    color: #ffffff;
+  }
+
+  body.dark .arrow {
+    color: #90caf9;
+  }
+
+  body.dark .slider {
+    background-color: #555;
+  }
+
+  body.dark .main {
+    background-image: linear-gradient(120deg, black, rgb(0, 0, 0));
+
+  }
+
+  body.dark h4 {
+    color: orange;
+    text-shadow: 0 0 0.5rem rgb(0, 0, 0),
+      0 0 0.7rem rgb(0, 0, 0),
+      0 0 1.5rem rgb(0, 0, 0);
+  }
+
+  body.dark h2 {
+    color: orange;
+    text-shadow: 0 0 0.5rem rgb(255, 199, 57),
+      0 0 0.7rem rgb(162, 150, 150),
+
+  }
+
+  body.dark pre {
+    color: rgb(255, 255, 255);
+    text-shadow: 0 0 0.5rem rgb(0, 0, 0),
+      0 0 0.7rem rgb(0, 0, 0),
+      0 0 1.5rem rgb(0, 0, 0);
+  }
+
+  body.dark .offcanvas-body {
+    background-color: black;
+  }
+
+  body.dark .container {
+    background-color: black;
+  }
+
+  body.dark .offcanvas-header {
+    background-color: black;
+  }
+
+  body.dark h1 {
+    color: orange;
+  }
+
+  body.dark p {
+    color: rgb(255, 255, 255);
+  }
+
+  body.dark .ab {
+    background-color: rgb(255, 98, 0);
+    color: white;
+  }
+
+  body.dark .dropdown-menu {
+    background-color: #000000;
+  }
+
+  body.dark .chat-messages {
+    background-color: #000000;
+  }
+
+  body.dark .chat-input {
+    background-color: #000000;
+  }
+
+  body.dark .chat-container {
+    background-color: #000000;
+  }
+
+  .chat-container {
+    margin-left: 17px;
+    width: 400px;
+    max-width: 90%;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Chat header */
+  .chat-header {
+    background-color: rgb(255, 98, 0);
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  /* Chat messages */
+  .chat-messages {
+    padding: 15px;
+    height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #ffffff;
+  }
+
+  .message {
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 80%;
+  }
+
+  .user-message {
+    background-color: #d1e7ff;
+    align-self: flex-end;
+  }
+
+  .bot-message {
+    background-color: #e5e5e5;
+    align-self: flex-start;
+  }
+
+  /* Chat input */
+  .chat-input {
+    display: flex;
+    margin-top: 100px;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  .chat-input input[type="text"] {
+
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+
+  .chat-input input[type="submit"] {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background-color: rgb(255, 98, 0);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .chat-input input[type="submit"]:hover {
+    background-color: rgb(255, 98, 0);
+    color: #ffffff;
+    scale: 1.03;
+  }
+
+  .btn5 {
+    border-width: 1px;
+    border-color: rgb(157, 154, 154);
+    border-radius: 35px;
+    float: right;
+    margin-right: 50px;
+    background-color: rgb(235, 229, 229);
+    margin-top: 10px;
+    position: fixed;
+    right: -15px;
+    top: 480px;
+    z-index: 999;
+    animation: glo 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes glo {
+    0% {
+      transform: translateY(10px);
+    }
+
+    100% {
+      transform: translateY(-10px);
+
+    }
+  }
+
+  #uh {
+    text-decoration: none;
+  }
+
+  #uh:hover {
+    scale: 1.08;
+  }
+
+  .hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5%;
+
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-text {
+    width: 47%;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 22px;
+
+    animation: fadeInUp 0.8s ease forwards;
+  }
+
+  body.dark section {
+    background-color: black;
+  }
+
+  .hero-text h1 {
+    font-size: 3.4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: #222;
+  }
+
+
+  .hero-text p {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    margin-bottom: 30px;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: #ff4d30;
+    border: none;
+    color: white;
+    border-radius: 14px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    background: #e33f24;
+  }
+
+  .hero-img {
+    width: 50%;
+    height: 90%;
+
+    border-radius: 26px;
+
+    animation: slideInRight 1s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* FORCE h1 to become orange in dark mode */
+  /* Dark mode hero section background */
+  body.dark .hero {
+    background-color: #000000 !important;
+    background-image: none !important;
+  }
+
+  /* Dark mode hero text box */
+  body.dark .hero-text {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+  }
+
+  /* Dark mode hero heading text */
+  body.dark .hero-text h1 {
+    color: rgb(255, 255, 255) !important;
+  }
+
+  body.dark .hero-text span {
+    color: rgb(255, 98, 0) !important;
+  }
+
+  /* Dark mode paragraph text */
+  body.dark .hero-text p {
+    color: #ddd;
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .box {
+    background: rgba(rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), 0);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    /* stack image above text */
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+  }
+
+  .box p {
+    font-weight: 600;
+  }
+
+  /* Wrapper Layout */
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 25px;
+    padding: 30px;
+  }
+
+  /* Box Design */
+  .box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Hover Effect */
+  .box:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Image Styling */
+  .food-img {
+    width: 100%;
+    height: 130px;
+    object-fit: contain;
+    filter: drop-shadow(3px 5px 8px rgba(0, 0, 0, 0.3));
+    transition: 0.3s ease;
+  }
+
+  /* Image Hover */
+  .box:hover .food-img {
+    transform: scale(1.1);
+  }
+
+  /* Text Styling */
+  .box p {
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  /* Optional Background */
+
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columns */
+    gap: 25px;
+    padding: 30px;
+  }
+
+  /* Box Design */
+  .box {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Hover Effect */
+  .box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Image */
+  .food-img {
+    width: 100%;
+    height: 130px;
+    object-fit: contain;
+    filter: drop-shadow(3px 5px 8px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Text */
+  .box p {
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  @media (max-width: 992px) {
+    .wrapper {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 576px) {
+    .wrapper {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  .visit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 70px;
+    padding: 10px 20px;
+  }
+
+  /* Heading */
+  .visit h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* Button Styling */
+  .see-more-btn {
+    background: linear-gradient(135deg, #ff7e5f, #ff3f34);
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  /* Hover Effect */
+  .see-more-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .visit {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 20px;
+    }
+
+    .see-more-btn {
+      align-self: flex-end;
+    }
+  }
+
+  /* Modal Styling */
+  .custom-modal {
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  /* Left Section */
+  .left-section {
+    background: linear-gradient(135deg, #ff7e5f, #ff3f34);
+    color: white;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .left-section h2 {
+    font-weight: 700;
+  }
+
+  .left-section p {
+    opacity: 0.9;
+  }
+
+  /* Input */
+  .custom-input {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+
+  /* Login Button */
+  .login-btn {
+    background: #ff3f34;
+    color: white;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .login-btn:hover {
+    background: #e63228;
+    transform: scale(1.02);
+  }
+
+  /* Social Buttons */
+  .social-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+  }
+
+  .social-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Colors */
+  .google {
+    background: #fff;
+  }
+
+  .facebook {
+    background: #e7f0ff;
+  }
+
+  .github {
+    background: #f5f5f5;
+  }
+
+  /* 📱 Responsive Mobile Overrides */
+  @media (max-width: 768px) {
+    .hero {
+      height: auto !important;
+      min-height: 100vh;
+      flex-direction: column !important;
+      padding: 100px 20px 50px !important;
+      text-align: center;
+      gap: 30px;
+    }
+
+    .hero-text {
+      width: 100% !important;
+      padding: 30px 20px !important;
+    }
+
+    .hero-text h1 {
+      font-size: 2.2rem !important;
+      line-height: 1.2 !important;
+    }
+
+    .hero-img {
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    .hero-img img {
+      margin-left: 0 !important;
+      max-width: 280px;
+      width: 100%;
+    }
+
+    .card {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    .visit {
+      margin: 20px !important;
+      text-align: center;
+    }
+  }
+</style>
+
+<body style=" background-image: linear-gradient(120deg, orange, white, orange);">
+  <div id="loadingOverlay">
+    <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+
+  <div th:replace="navbar :: navbar"></div>
+
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Order Food <span style="color:rgb(255, 98, 0) ;">Faster</span><br>Than Your Hunger Wins</h1>
+      <p>Fresh flavors, sleek design, and lightning-fast delivery—all curated for your cravings.</p>
+      <button class="btn-primary" style="font-weight: 550;background-color: rgb(255, 103, 47);">Explore Menu</button>
+    </div>
+
+    <div class="hero-img">
+      <img th:src="@{/chef.png}" style="height: 100%;width: 100%;margin-left: 82px;" alt="">
+    </div>
+
+
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvas"
+      aria-labelledby="offcanvasWithBothOptionsLabel">
+      <div class="offcanvas-header ">
+
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <div class="container mt-0 text-center">
+          <div class="chat-container">
+            <div class="chat-header">AI Chatbot</div>
+
+            <div class="chat-messages" id="chatMessagesContainer">
+              <div th:each="msg : ${messages}" th:text="${msg}"
+                th:classappend="${msg.startsWith('You:') ? 'user-message' : 'bot-message'}" class="message">
+              </div>
+            </div>
+
+            <form class="chat-input" id="chatForm" onsubmit="sendChatMessage(event)">
+              <input type="text" placeholder="Type your message..." name="query" id="chatInput" required>
+              <input type="submit" value="Send">
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  </div>
+
+
+
+
+
+
+  <div class="container-fluid">
+
+    <section class="about-section">
+      <div class="about-text">
+        <h2 style="text-align: left;color: rgb(255, 98, 0);">About Us</h2>
+        <p>At Gourmet Express, we bring the flavors of your favorite restaurants straight to your doorstep. Our mission
+          is simple: deliver fresh, delicious, and high-quality meals faster than ever. Whether you're craving a classic
+          pizza, a healthy salad, or gourmet desserts, we’ve got you covered.</p>
+        <p>We partner with local restaurants to ensure every order is made with care and arrives hot and ready to enjoy.
+          Experience hassle-free food delivery designed for food lovers like you!</p>
+
+      </div>
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80"
+          alt="Delicious Food Delivery">
+      </div>
+    </section>
+    <section class="about-section">
+      <div class="about-image">
+        <img th:src="@{/bn.webp}" alt="Delicious Food Delivery">
+      </div>
+      <div class="about-text">
+        <h2 style="text-align: left;color: rgb(255, 98, 0);">Fresh and healthy</h2>
+        <p>At Gourmet Express, we bring the flavors of your favorite restaurants straight to your doorstep. Our mission
+          is simple: deliver fresh, delicious, and high-quality meals faster than ever. Whether you're craving a classic
+          pizza, a healthy salad, or gourmet desserts, we’ve got you covered.</p>
+        <p>We partner with local restaurants to ensure every order is made with care and arrives hot and ready to enjoy.
+          Experience hassle-free food delivery designed for food lovers like you!</p>
+
+      </div>
+
+    </section>
+
+
+
+
+
+    <div class="container-fluid mt-5" style="max-width: 900px; width: 100%;">
+      <hr style="font-weight: 900;">
+    </div>
+
+    <div class="visit">
+      <h2> Order our best food options</h2>
+      <button class="see-more-btn">See more ➜</button>
+    </div>
+
+
+    <div class="wrapper">
+      <div class="box">
+        <img th:src="@{/meal.png}" class="food-img" alt="">
+        <p>Meal</p>
+      </div>
+
+      <div class="box">
+        <img th:src="@{/momos.png}" class="food-img" alt="">
+        <p>Chinese</p>
+      </div>
+
+      <div class="box">
+        <img th:src="@{/dessert.png}" class="food-img" alt="">
+        <p>Dessert</p>
+      </div>
+
+      <div class="box">
+        <img th:src="@{/veg.png}" class="food-img" alt="">
+        <p>Vegetarian</p>
+      </div>
+
+      <div class="box">
+        <img th:src="@{/snack.png}" class="food-img" alt="">
+        <p>Snacks</p>
+      </div>
+
+      <div class="box">
+        <img th:src="@{/beaverage.png}" class="food-img" alt="">
+        <p>Beverage</p>
+      </div>
+
+      <div class="box">
+        <img th:src="@{/south.png}" class="food-img" alt="">
+        <p>South Indian</p>
+      </div>
+
+      <div class="box">
+        <img th:src="@{/italian.png}" class="food-img" alt="">
+        <p>Italian</p>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container-fluid mt-5" style="max-width: 900px; width: 100%;">
+      <hr style="font-weight: 900;">
+    </div>
+
+
+    <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"
+      style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;float: right;margin-right: 50px;background-color: rgb(235, 229, 229);margin-top: 10px;">Sort
+      by price ⏷</button>
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+      aria-labelledby="offcanvasWithBothOptionsLabel">
+      <div class="offcanvas-header ">
+
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+
+      <div class="offcanvas-body">
+
+        <div class="container mt-0 text-center">
+          <p style="color: rgb(255, 98, 0);font-weight: 600;">Filter by price</p>
+
+          <div class="d-flex flex-wrap justify-content-center gap-2">
+
+            <form th:action="@{'/filter/price/' + 50}" method="get" style="display:inline;">
+              <button type="submit" class="btn"
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">₹50
+                or less</button>
+            </form>
+
+            <form th:action="@{/filter/price/100}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">₹100
+                or less</button>
+            </form>
+
+            <form th:action="@{'/filter/price/' + 200}" method="get" style="display:inline;">
+              <button type="submit" class="btn"
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">₹200
+                or less</button>
+            </form>
+
+            <form th:action="@{/filter/price/250}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">₹250
+                or less</button>
+            </form>
+            <form th:action="@{/filter/price/300}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">₹300
+                or less</button>
+            </form>
+            <form th:action="@{/filter/price/350}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">₹350
+                or less</button>
+            </form>
+            <form th:action="@{/filter/price/400}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">₹400
+                or less</button>
+            </form>
+
+            <form th:action="@{/index}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Show
+                All</button>
+            </form>
+
+          </div>
+        </div>
+        <div class="container mt-4 text-center">
+          <p style="color: rgb(255, 98, 0);font-weight: 600;">Filter by Category</p>
+
+          <div class="d-flex flex-wrap justify-content-center gap-2">
+            <form th:action="@{/foodlis/2}" method="get" style="display:inline;">
+              <button type="submit" class="btn"
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">vegetarian</button>
+            </form>
+
+            <form th:action="@{/foodlis/1}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">fastfood</button>
+            </form>
+
+            <form th:action="@{/foodlis/3}" method="get" style="display:inline;">
+              <button type="submit" class="btn"
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Desserts</button>
+            </form>
+
+            <form th:action="@{/foodlis/4}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Beverages</button>
+            </form>
+
+            <form th:action="@{/foodlis/5}" method="get" style="display:inline;">
+              <button type="submit" class="btn"
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Snacks</button>
+            </form>
+
+            <form th:action="@{/foodlis/6}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Chinese
+                food</button>
+            </form>
+
+            <form th:action="@{/foodlis/52}" method="get" style="display:inline;">
+              <button type="submit" class="btn"
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Italian</button>
+            </form>
+
+            <form th:action="@{/foodlis/53}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Meal</button>
+            </form>
+
+            <form th:action="@{/foodlis/54}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">South
+                Indian</button>
+            </form>
+            <form th:action="@{/index}" method="get" style="display:inline;">
+              <button type="submit" class="btn "
+                style="border-width: 1px;border-color: rgb(157, 154, 154);border-radius: 18px;background-color: rgb(235, 229, 229);">Show
+                All</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container-fluid" style="max-width: 900px; width: 100%; margin-top: 0px;">
+      <hr style="font-weight: 10; color: aliceblue;">
+    </div>
+
+
+    <div class="row mt-5">
+
+      <div class="col-sm-4" th:each="item : ${products}">
+        <div class="card ms-5 mt-5 shadow-lg" style="width:18rem;">
+          <img th:src="@{'/img/' + ${item.id}}" class="card-img-top" th:alt="${item.food}"
+            style="height: 180px; object-fit: cover;">
+          <div class="card-body text-center fw-bold">
+            <h2 class="fst-italic" style="font-size: 2rem;text-align: left;" th:text="${item.food}"></h2>
+            <h3 class="fst-italic text-success" style="font-size: 1.2rem;text-align: left;"
+              th:text="'₹' + ${item.price}"></h3>
+            <p class="text-muted mb-3" style="text-align: left;" th:text="${item.description}"></p>
+            <button type="button" class="btn1   fw-semibold fst-italic px-4 py-2 shadow-sm"
+              th:onclick="'window.location.href=\'/extra/' + ${item.id} + '\''">
+              Buy now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="row ">
+
+      <div class="col-sm-4" th:each="item : ${pro}">
+        <div class="card ms-5 mt-5 shadow-lg" style="width:18rem; background: rgba(255, 255, 255, 0.55);">
+          <img th:src="@{'/img/' + ${item.id}}" class="card-img-top" th:alt="${item.food}"
+            style="height: 180px; object-fit: cover;">
+          <div class="card-body text-center fw-bold">
+            <h2 class="fst-italic" style="font-size: 2rem;text-align: left;" th:text="${item.food}"></h2>
+            <h3 class="fst-italic text-success" style="font-size: 1.2rem;text-align: left;"
+              th:text="'₹' + ${item.price}"></h3>
+            <p class="text-muted mb-3" style="text-align: left;" th:text="${item.description}"></p>
+            <button type="button" class="btn1   fw-semibold fst-italic px-4 py-2 shadow-sm"
+              th:onclick="'window.location.href=\'/extra/' + ${item.id} + '\''">
+              Buy now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div th:each="cat : ${categories}" class="mb-5">
+      <!-- Category Title -->
+      <h2 class=" fw-bold fst-italic mb-3" th:text="${cat.category}"></h2>
+
+
+      <div class="row mt-5 ms-5">
+        <div class="col-sm-4" th:each="item : ${cat.products}">
+          <div class="card ms-5 mt-5 shadow-lg" style="width:18rem;">
+            <img th:src="@{'/img/' + ${item.id}}" class="card-img-top" th:alt="${item.food}"
+              style="height: 180px; object-fit: cover;">
+            <div class="card-body text-center fw-bold">
+              <h2 class="fst-italic" style="font-size: 2rem;text-align: left;" th:text="${item.food}"></h2>
+              <h3 class="fst-italic text-success" style="font-size: 1.2rem;text-align: left;"
+                th:text="'₹' + ${item.price}"></h3>
+              <p class="text-muted mb-3" style="text-align: left;" th:text="${item.description}"></p>
+              <button type="button" class="btn1   fw-semibold fst-italic px-4 py-2 shadow-sm"
+                th:onclick="'window.location.href=\'/extra/' + ${item.id} + '\''">
+                Buy now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-fluid" style="max-width: 900px; width: 100%; margin-top: 80px;">
+      <hr>
+    </div>
+
+    <div class="container-fluid">
+      <div class="col-sm-12">
+        <nav aria-label="..." class="maiya d-flex justify-content-center">
+          <ul class="pagination ">
+            <li class="page-item disabled">
+              <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="index.html">1</a></li>
+            <li class="page-item active">
+              <a class="page-link" href="secondpage.html" aria-current="page">2</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <footer class="site-footer" role="contentinfo" aria-label="Site footer">
+      <div class="wrap">
+        <!-- left: brand & description -->
+        <div>
+          <div class="footer-brand">
+            <div class="brand-logo" aria-hidden="true">FD</div>
+            <div class="brand-copy">
+              <h3>FreshDish</h3>
+              <p>Delivering bright, fresh flavors and lightning-fast service. Built with care — and a little bit of code
+                magic.</p>
+            </div>
+          </div>
+
+          <!-- newsletter + socials (mobile-friendly) -->
+          <div style="margin-top:18px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+            <form class="newsletter" onsubmit="event.preventDefault(); alert('Thanks!');"
+              aria-label="Subscribe to newsletter">
+              <label for="email" class="sr-only"
+                style="position:absolute;left:-10000px;background-color: rgb(0, 0, 0);">Email address</label>
+              <input id="email" type="email" style="background-color: rgb(189, 185, 185); " placeholder="Your email"
+                required />
+              <button type="submit">Join</button>
+            </form>
+
+            <div class="socials" aria-hidden="false" style="margin-left:auto;">
+              <a class="icon" href="#" aria-label="Follow on Twitter" title="Twitter">
+                <!-- Twitter SVG -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M22 5.8c-.6.3-1.2.5-1.9.6.7-.4 1.2-1.1 1.4-1.9-.7.4-1.5.6-2.4.8C18.7 4.6 17.8 4 16.8 4c-1.8 0-3.2 1.5-3.2 3.3 0 .3 0 .6.1.9-2.7-.1-5.1-1.5-6.7-3.6-.3.6-.5 1.2-.5 1.9 0 1.2.6 2.3 1.7 3-.5 0-1-.1-1.4-.4 0 0 0 .1 0 .1 0 1.9 1.3 3.5 3.1 3.8-.3.1-.6.1-.9.1-.2 0-.5 0-.7-.1.5 1.7 2.1 2.9 4 2.9-1.4 1.1-3.1 1.7-5 1.7-.3 0-.6 0-.9-.1 1.8 1.1 4 1.7 6.3 1.7 7.5 0 11.6-6.3 11.6-11.8v-.5c.8-.6 1.3-1.4 1.8-2.3-.7.3-1.5.5-2.4.6z"
+                    fill="currentColor" />
+                </svg>
+              </a>
+
+              <a class="icon" href="#" aria-label="Follow on Facebook" title="Facebook">
+                <!-- Facebook SVG -->
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M22 12.1C22 6.6 17.5 2 12 2S2 6.6 2 12.1c0 5 3.7 9.2 8.5 9.9v-7H8.1v-2.9h2.4V9.1c0-2.4 1.4-3.7 3.6-3.7 1 0 2 .1 2 .1v2.3h-1.2c-1.3 0-1.7.8-1.7 1.6v2h2.9l-.5 2.9h-2.4v7C18.3 21.3 22 17.1 22 12.1z"
+                    fill="currentColor" />
+                </svg>
+              </a>
+
+              <a class="icon" href="#" aria-label="Follow on Instagram" title="Instagram">
+                <!-- Instagram SVG -->
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 6.4a4.6 4.6 0 100 9.2 4.6 4.6 0 000-9.2zm5-.9a1.1 1.1 0 11-2.2 0 1.1 1.1 0 012.2 0zM12 9.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z"
+                    fill="currentColor" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- right: navigation + support -->
+        <div class="footer-grid" aria-hidden="false">
+          <div class="footer-section">
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Menu & Pricing</a></li>
+              <li><a href="#">Gift cards</a></li>
+              <li><a href="#">Corporate Orders</a></li>
+              <li><a href="#">API & Integrations</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Press</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap footer-bottom" style="max-width:var(--max-width);">
+        <div>© <span id="year"></span> FreshDish. All rights reserved.</div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="font-size:0.92rem; color:var(--muted)">Made with ❤️ in code</div>
+          <a href="#"
+            style="padding:8px 12px; border-radius:8px; background:var(--card); font-weight:600; color:var(--text);">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Small script for current year and accessible label fallback
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </div>
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="check2" viewBox="0 0 16 16">
+      <path
+        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+      </path>
+    </symbol>
+    <symbol id="circle-half" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
+    </symbol>
+    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+      <path
+        d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
+      </path>
+      <path
+        d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
+      </path>
+    </symbol>
+    <symbol id="sun-fill" viewBox="0 0 16 16">
+      <path
+        d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
+      </path>
+    </symbol>
+  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="bootstrap" viewBox="0 0 118 94">
+      <title>Bootstrap</title>
+      <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z">
+      </path>
+    </symbol>
+    <symbol id="home" viewBox="0 0 16 16">
+      <path
+        d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z">
+      </path>
+    </symbol>
+    <symbol id="speedometer2" viewBox="0 0 16 16">
+      <path
+        d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z">
+      </path>
+      <path fill-rule="evenodd"
+        d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z">
+      </path>
+    </symbol>
+    <symbol id="table" viewBox="0 0 16 16">
+      <path
+        d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z">
+      </path>
+    </symbol>
+    <symbol id="people-circle" viewBox="0 0 16 16">
+      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+      <path fill-rule="evenodd"
+        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z">
+      </path>
+    </symbol>
+    <symbol id="grid" viewBox="0 0 16 16">
+      <path
+        d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z">
+      </path>
+    </symbol>
+  </svg>
+  <script>
+    function sendChatMessage(event) {
+      // Prevent the default form submission (stops page refresh)
+      event.preventDefault();
+
+      const chatInput = document.getElementById('chatInput');
+      const query = chatInput.value.trim();
+      const chatHistory = document.getElementById('chatMessagesContainer');
+
+      if (!query) return;
+
+      // Temporarily disable input/button and show loading state
+      const originalValue = chatInput.value;
+      chatInput.disabled = true;
+      chatInput.value = 'Thinking...';
+
+      // Define the endpoint (this should match the POST mapping in the Controller)
+      // I will assume you update the controller endpoint to POST /chat-ajax
+      const endpoint = '/chat-ajax';
+
+      // Use Fetch API to make an asynchronous POST request
+      fetch(endpoint, {
+        method: 'POST',
+        // It's cleaner to send text as the body for a single query string
+        headers: { 'Content-Type': 'text/plain' },
+        body: query
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          // The controller should return a JSON array of updated messages
+          return response.json();
+        })
+        .then(messages => {
+          // 1. Clear the history container
+          chatHistory.innerHTML = '';
+
+          // 2. Re-render all messages from the JSON response
+          messages.forEach(message => {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            // Add CSS classes based on prefix
+            if (message.startsWith('You:')) {
+              messageElement.className = 'message user-message';
+            } else if (message.startsWith('Bot:')) {
+              messageElement.className = 'message bot-message';
+            } else {
+              messageElement.className = 'message system-message';
+            }
+            chatHistory.appendChild(messageElement);
+          });
+
+          // 3. Re-enable the input and clear it for the next message
+          chatInput.disabled = false;
+          chatInput.value = ''; // Reset input field
+
+          // Optional: Scroll to the bottom of the chat
+          chatHistory.scrollTop = chatHistory.scrollHeight;
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          // Restore original state on error
+          chatInput.value = originalValue;
+          chatInput.disabled = false;
+          alert('Error sending message: ' + error.message);
+        });
+    }
+  </script>
+
+  <script>
+    const toggle = document.getElementById("darkToggle");
+
+    // 1. When the page loads, check if the user had dark mode on
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+      if (toggle) toggle.checked = true;
+    }
+
+    // 2. Listen for toggle change
+    if (toggle) {
+      toggle.addEventListener("change", () => {
+        if (toggle.checked) {
+          document.body.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          document.body.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        }
+      });
+    }
+  </script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"
+    integrity="sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
+    integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

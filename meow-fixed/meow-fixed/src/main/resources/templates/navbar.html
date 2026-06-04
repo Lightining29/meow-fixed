@@ -1,0 +1,165 @@
+<div th:fragment="navbar">
+  <nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container-fluid px-3">
+      <!-- Brand Logo -->
+      <div class="d-flex align-items-center">
+        <a class="ai navbar-brand fw-bolder m-0"
+          style="color: rgb(255, 109, 65); font-size: 1.5rem;"
+          th:href="@{/index}">𝐃𝐢𝐧𝐞</a>
+        <a class="navbar-brand fw-bolder m-0" 
+          style="font-size: 1.27rem; margin-left: 2px;"
+          th:href="@{/index}">𝐡𝐚𝐯𝐞𝐧</a>
+      </div>
+
+      <!-- Search form (stays visible/adjusts next to brand) -->
+      <form action="/search" method="get" class="navbar-search-form d-none d-sm-block ms-3">
+        <input type="search" name="q" id="search"
+          placeholder="🔎︎  search for burger , pizza , noodles.....">
+      </form>
+
+      <!-- Toggler for Mobile collapse -->
+      <button class="navbar-toggler ms-auto me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Collapsible links -->
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <!-- Mobile search (visible only when collapsed on mobile) -->
+        <form action="/search" method="get" class="w-100 my-2 d-block d-sm-none">
+          <input type="search" name="q" class="form-control" style="border-radius: 10px;"
+            placeholder="🔎︎  search for burger , pizza , noodles.....">
+        </form>
+
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item py-1">
+            <div class="dark-mode-toggle-wrapper">
+              <label class="switch m-0">
+                <input type="checkbox" id="darkToggle">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bolder px-3" th:href="@{/cate}">𝐂𝐚𝐭𝐞𝐠𝐨𝐫𝐲</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bolder px-3" th:href="@{/food}">𝐅𝐨𝐨𝐝</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bolder px-3" th:href="@{/cart}">𝐂𝐚𝐫𝐭</a>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="ab px-3 py-1 border-0"
+              style="border-radius: 7px; font-weight: 550; font-family: Arial, Helvetica, sans-serif; height: 35px;"
+              data-bs-toggle="modal" data-bs-target="#exampleModal">Register</button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Avatar & Sidebar always on far right -->
+      <div class="d-flex align-items-center ms-2">
+        <button type="button" class="btn p-0 border-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <img th:if="${user != null}" th:src="@{'/image/' + ${user.id}}" alt="User Avatar"
+            style="height: 30px; width: 30px; border-radius: 50%;">
+          <img th:if="${user == null}" th:src="@{/avatar.png}" alt="Default Avatar"
+            style="height: 30px; width: 30px; border-radius: 50%;">
+        </button>
+
+        <div class="btn-group dropstart ms-2">
+          <button type="button" class="btn p-0 border-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <span style="text-decoration: none; font-size: 1.3rem; color: #222; font-weight: bold;">☰</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:href="@{/prof}">My profile</a></li>
+            <li><a class="dropdown-item" href="#">Setting</a></li>
+            <li><a class="dropdown-item" href="#">Menu</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Register Modal -->
+  <form action="save" method="post" enctype="multipart/form-data">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px;">
+          <div class="modal-header">
+            <h1 class="modal-title fs-4 fw-semibold w-100 text-center">Sign-up</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col">
+                <input type="text" class="form-control" name="fname" placeholder="First name">
+                <div id="demo1" class="text-danger"></div>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" name="lname" placeholder="Last name">
+                <div id="demo2" class="text-danger"></div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="form-label fw-medium">Email address</label>
+              <input type="email" class="form-control" name="email" placeholder="example@mail.com">
+              <div id="demo3" class="text-danger"></div>
+            </div>
+            <div class="mt-3">
+              <label class="form-label fw-medium">Phone number</label>
+              <input type="text" class="form-control" name="phno" placeholder="1234567890">
+              <div id="demo4" class="text-danger"></div>
+            </div>
+            <div class="mt-3">
+              <label class="form-label fw-medium">Upload image</label>
+              <input type="file" class="form-control" name="image" required>
+            </div>
+            <div class="mt-3">
+              <label class="form-label fw-medium">Address</label>
+              <input type="text" class="form-control" name="adress" placeholder="Enter your address">
+              <div id="demo5" class="text-danger"></div>
+            </div>
+            <div class="mt-3">
+              <label class="form-label fw-medium">Confirm password</label>
+              <input type="password" class="form-control" name="pass" placeholder="******">
+              <div id="demo6" class="text-danger"></div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-4 py-2" style="border-radius: 10px;">
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 16px;">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 fw-bolder w-100 text-center" id="staticBackdropLabel">Login</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="kholo" method="post">
+            <div class="mb-3">
+              <label class="form-label fw-medium">Username</label>
+              <input type="text" class="form-control border-black" name="fname" placeholder="name@example.com">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-medium">Password</label>
+              <input type="password" name="pass" class="form-control border-black" placeholder="manish@123">
+            </div>
+            <button type="submit"
+              style="background-color: rgb(255, 98, 0); color: aliceblue; font-weight: 500;"
+              id="play" class="btn w-100 py-2 mt-3">Login</button>
+          </form>
+          <div class="text-center mt-3 mb-2">
+            <small class="text-body-secondary">By clicking Log in, you agree to the terms of use.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cart View</title>
+ <script>
+      // Wait until page fully loads
+      window.addEventListener("load", function () {
+        const overlay = document.getElementById("loadingOverlay");
+
+        // fade out the overlay
+        overlay.classList.add("hidden");
+
+        // remove it from DOM after fade completes
+        setTimeout(() => overlay.style.display = "none", 10000);
+      });
+    </script>
+</head>
+<style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #f0f4ff, #fafcff);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      color: #333;
+      letter-spacing: 1px;
+    }
+
+    .cart {
+      max-width: 950px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background: #fafafa;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+    }
+
+    .product {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .product img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: #222;
+    }
+
+    .product small {
+      display: block;
+      color: #777;
+      font-size: 0.85rem;
+    }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .qty input {
+      width: 45px;
+      text-align: center;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    /* summary box */
+    .summary {
+      margin-top: 25px;
+      text-align: right;
+      padding: 20px;
+      background: #f9faff;
+      border-radius: 12px;
+      border: 1px solid #e3e6f0;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .summary div {
+      margin: 8px 0;
+      font-size: 1rem;
+    }
+
+    .qty input {
+  position: relative;
+  top: -20px;  /* lift it slightly */
+}
+
+    .summary .total {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #111;
+    }
+
+    /* checkout button */
+    .checkout {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .checkout button {
+      background: Skyblue;
+      color: #fff;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 6px 16px rgba(123,47,247,0.3);
+      transition: 0.3s ease;
+    }
+
+    .checkout button:hover {
+      background: linear-gradient(135deg, #f107a3, #7b2ff7);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(123,47,247,0.4);
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th { display: none; }
+      td {
+        border-bottom: 1px solid #eee;
+        padding: 12px 0;
+      }
+      .product {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .summary {
+        text-align: left;
+      }
+      .checkout {
+        text-align: left;
+      }
+    }
+     #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* can use #f8f9fa or dark overlay */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* above everything */
+        transition: opacity 0.8s ease;
+      }
+      #loadingOverlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+  </style>
+<body>
+  <div id="loadingOverlay">
+      <div class="spinner-border text-dark" role="status" style="width: 4rem; height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+ <h2>Your Cart</h2>
+ 
+
+ 
+ 
+  <div class="cart">
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+ 
+      <tr th:each=" it : ${cartitems}">
+        <td class="product">
+          <img th:src="@{'/img/' + ${it.product.id}}" alt="Pizza Oven">
+          <div>
+            <span class="product-name" th:text="${it.product.food}"></span>
+          </div>
+        </td>
+            <td th:text="${ '₹' + it.product.price}"></td>
+        <td class="qty"  >
+          <input style="margin-top:-40px;" name="num" type="text" placeholder="1">
+        </td>
+       
+        
+        <td> 
+         <form th:action="@{'/r/' + ${it.id}}" method="post">
+        
+        <input style="
+    background: linear-gradient(135deg, red);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  " type="submit" value="remove"></form></td>
+                 
+
+      </tr>
+              
+
+
+    </table>
+     <div class="summary">
+    
+      <div class="total" th:text="${ 'Total price = ₹' + totalPrice}"></div>
+    </div>
+
+    <div class="checkout">
+       <form th:action="@{/car}" method="get">
+      <button>Check Out</button>
+    </form>
+    </div>
+  </div>
+
+</body>
+</html>
