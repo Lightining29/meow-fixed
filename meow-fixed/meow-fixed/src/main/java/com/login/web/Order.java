@@ -1,7 +1,6 @@
 package com.login.web;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "orders")
@@ -12,11 +11,8 @@ public class Order {
     @Id
     private Long id;
 
-    @Indexed
     private Long userId;
     private double totalAmount;
-
-    @Indexed
     private String status;
 
     public Long getId() {
