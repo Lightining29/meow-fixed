@@ -10,18 +10,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
-  <script>
-    // Wait until page fully loads
-    window.addEventListener("load", function () {
-      const overlay = document.getElementById("loadingOverlay");
 
-      // fade out the overlay
-      overlay.classList.add("hidden");
-
-      // remove it from DOM after fade completes
-      setTimeout(() => overlay.style.display = "none", 100);
-    });
-  </script>
 </head>
 
 <style>
@@ -210,26 +199,7 @@
     border-bottom: 2px solid #000000;
   }
 
-  #loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    /* can use #f8f9fa or dark overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    /* above everything */
-    transition: opacity 1.5s ease;
-  }
 
-  #loadingOverlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
 
   @media (max-width: 992px) {
     .box1 h4 {
@@ -1011,11 +981,7 @@
 </style>
 
 <body style=" background-image: linear-gradient(120deg, orange, white, orange);">
-  <div id="loadingOverlay">
-    <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </div>
+
 
 
   <div th:replace="navbar :: navbar"></div>
