@@ -94,15 +94,13 @@ color:white;
       }
   </style>
  <script>
-      // Wait until page fully loads
-      window.addEventListener("load", function () {
+      // Wait until DOM is ready to show the content instantly
+      document.addEventListener("DOMContentLoaded", function () {
         const overlay = document.getElementById("loadingOverlay");
-
-        // fade out the overlay
-        overlay.classList.add("hidden");
-
-        // remove it from DOM after fade completes
-        setTimeout(() => overlay.style.display = "none", 2000);
+        if (overlay) {
+          overlay.classList.add("hidden");
+          setTimeout(() => overlay.style.display = "none", 800);
+        }
       });
     </script>
 </head>
