@@ -3,6 +3,7 @@ package com.login.web;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import lombok.AllArgsConstructor;
@@ -21,11 +22,16 @@ public class Product {
 
     @Id
     private int id;
+
+    @Indexed
     private String food;
+
+    @Indexed
     private int price;
     private String description;
     private byte[] image;
 
+    @Indexed
     @DocumentReference
     private Cat cat;
 

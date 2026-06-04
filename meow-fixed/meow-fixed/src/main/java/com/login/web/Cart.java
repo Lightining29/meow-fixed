@@ -1,6 +1,7 @@
 package com.login.web;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import lombok.*;
@@ -17,6 +18,7 @@ public class Cart {
     @Id
     private int id;
 
+    @Indexed
     @DocumentReference
     private Login login;
 

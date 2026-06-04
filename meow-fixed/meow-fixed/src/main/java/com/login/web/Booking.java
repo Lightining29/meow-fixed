@@ -3,6 +3,7 @@ package com.login.web;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import lombok.*;
@@ -24,6 +25,7 @@ public class Booking {
     private double totalAmount;
     private LocalDateTime bookingDate = LocalDateTime.now();
 
+    @Indexed
     @DocumentReference
     private Login login;
 
