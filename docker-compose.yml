@@ -17,8 +17,7 @@ services:
       # Defaults to local mongodb container if not configured in .env
       - SPRING_DATA_MONGODB_URI=${SPRING_DATA_MONGODB_URI:-mongodb://mongodb:27017/food-deleivery}
       - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+
       
       # Use Ollama running on the host machine
       - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434
