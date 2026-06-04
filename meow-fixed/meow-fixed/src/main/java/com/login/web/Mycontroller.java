@@ -498,40 +498,46 @@ public class Mycontroller {
     }
 
     @PostMapping("/add/{productId}")
-public String addToCart(@PathVariable int productId, HttpSession session) {
+    public String addToCart(@PathVariable int productId, @RequestParam(value = "redirect", defaultValue = "index") String redirect, HttpSession session) {
 
-    String userId = (String) session.getAttribute("email");
+        String userId = (String) session.getAttribute("email");
+        if (userId == null) {
+            return "redirect:/index?error=login";
+        }
 
-    Login user = a.findByemail(userId).orElseThrow();
-    Product product = p.findById(productId).orElseThrow();
+        Login user = a.findByemail(userId).orElseThrow();
+        Product product = p.findById(productId).orElseThrow();
 
-    Cart cart = new Cart();
-    cart.setLogin(user);
-    cart.setProduct(product);
+        Cart cart = new Cart();
+        cart.setLogin(user);
+        cart.setProduct(product);
 
-    int quantity = 1;
-    cart.setQuantity(quantity);
+        int quantity = 1;
+        cart.setQuantity(quantity);
 
-    double price = product.getPrice();
-    double finalPrice = price;
+        double price = product.getPrice();
+        double finalPrice = price;
 
-    // 🔥 APPLY DISCOUNT
-    if (product.getDiscount() != null) {
-        double percent = product.getDiscount().getPercentage();
-        double discountAmount = (price * percent) / 100;
-        finalPrice = price - discountAmount;
+        // 🔥 APPLY DISCOUNT
+        if (product.getDiscount() != null) {
+            double percent = product.getDiscount().getPercentage();
+            double discountAmount = (price * percent) / 100;
+            finalPrice = price - discountAmount;
+        }
+
+        double totalPrice = finalPrice * quantity;
+
+        cart.setPrice(price);
+        cart.setFinalPrice(finalPrice);
+        cart.setTotalPrice(totalPrice);
+
+        ca.save(cart);
+
+        if ("cart".equals(redirect)) {
+            return "redirect:/cart";
+        }
+        return "redirect:/index";
     }
-
-    double totalPrice = finalPrice * quantity;
-
-    cart.setPrice(price);
-    cart.setFinalPrice(finalPrice);
-    cart.setTotalPrice(totalPrice);
-
-    ca.save(cart);
-
-    return "redirect:/index";
-}
     /*
      * ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
      * ┃ LOGIN USER ┃

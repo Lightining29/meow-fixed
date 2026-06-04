@@ -260,6 +260,18 @@
         box-shadow: 0 10px 25px rgba(255, 107, 53, 0.15);
     }
 
+    .btw.btn-buy {
+        background: linear-gradient(135deg, #2874f0, #5b9cf5);
+        box-shadow: 0 8px 25px rgba(40, 116, 240, 0.25);
+    }
+
+    .btw.btn-buy:hover {
+        background: var(--bg-card);
+        color: #2874f0;
+        border-color: #2874f0;
+        box-shadow: 0 10px 25px rgba(40, 116, 240, 0.15);
+    }
+
     .btn3 {
         display: inline-block;
         border: 1px solid var(--border-color);
@@ -503,8 +515,16 @@
             
             <div class="actions-wrapper">
                 <form th:action="@{'/add/' + ${extra.id}}" method="post" class="add-to-cart-form">
+                    <input type="hidden" name="redirect" value="index" />
                     <button type="submit" class="btw fw-bolder">
                      ≫ Add to cart
+                    </button>
+                </form>  
+
+                <form th:action="@{'/add/' + ${extra.id}}" method="post" class="add-to-cart-form">
+                    <input type="hidden" name="redirect" value="cart" />
+                    <button type="submit" class="btw btn-buy fw-bolder">
+                     ≫ Buy now
                     </button>
                 </form>  
 
